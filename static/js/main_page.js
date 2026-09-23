@@ -427,7 +427,7 @@ $(function () {
 $("#presentations").click(function (e) { 
     e.preventDefault();
     
-    window.location.href = '/presentation'
+    window.location.href = '/presentation';
 });
 
 $("#achievments").click(function (e) { 
