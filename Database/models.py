@@ -10,5 +10,6 @@ class Presentation(Base):
     name: Mapped[str]
     author: Mapped[str]
     description: Mapped[str| None] = mapped_column(default=None)
-    html_file: Mapped[str] = mapped_column(String(30))
+    file: Mapped[str] = mapped_column(String(30))
     hidden: Mapped[bool] = mapped_column(default=False)
+    preview_image: Mapped[str | None] = mapped_column(String(40), default=None)
