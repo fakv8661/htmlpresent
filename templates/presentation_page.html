@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Список презентаций</title>
+
+<link rel="icon" href="Images/nybik-s.gif">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', path='css/presentation_page.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= ФОН ================= -->
+    <div class="bg-mesh"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <canvas id="starfield"></canvas>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+
+    <!-- ================= НАЗАД ================= -->
+    <a class="back-link" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 6l-6 6 6 6"/>
+        </svg>
+        <span>Назад</span>
+    </a>
+
+    <!-- ================= КОНТЕНТ ================= -->
+    <main class="stage">
+
+        <header class="page-head">
+            <h1 class="page-title">Список презентаций</h1>
+            <p class="page-sub">Нажми на карточку, чтобы раскрыть подробную информацию</p>
+        </header>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+
+    </main>
+
+    <!-- ================= МОДАЛЬНОЕ ОКНО ================= -->
+    <div class="modal" id="modal" aria-hidden="true">
+        <div class="modal__backdrop" data-close></div>
+
+        <div class="modal__window" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <!-- содержимое генерируется JS -->
+        </div>
+    </div>
+
+    <!-- ================= КУРСОР ================= -->
+    <div class="cursor-ring-dashed"></div>
+    <div class="cursor-ring"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- ================= JQUERY 4.0.0 ================= -->
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script>const PRESENTATIONS = {{ presentations | tojson}};</script>
+    <script src="{{ url_for('static', path='js/presentation_page.js') }}"></script>
+
+</body>
+</html>
