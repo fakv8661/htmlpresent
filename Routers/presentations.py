@@ -3,7 +3,7 @@ import os
 from fastapi import APIRouter
 from fastapi.requests import Request
 from fastapi.responses import FileResponse
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 
 from templates_config import templates, templates_present
 from Database import database
@@ -11,11 +11,13 @@ import utils
 
 router = APIRouter(tags=['presentations'])
 
-@router.get("/presentations")
+@router.get("/presentation")
 async def prsentationpg(request: Request):
+    # LEGACY!!!
+    # убрать после рекода фронтенда
     presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations())
-    print(presentations)
-
+    # вот это
+    
     return templates.TemplateResponse(
         request,
         "presentation_page.html",
@@ -39,3 +41,9 @@ async def presentationgt(present_id: int, request: Request):
 
     else:
         return RedirectResponse(url="/")
+
+@router.get("/presentations")
+async def presentationlst(request: Request):
+    presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations())
+
+    return JSONResponse(presentations)
