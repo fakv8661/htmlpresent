@@ -3,14 +3,12 @@ import os
 
 import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
 from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
 
 from templates_config import templates_present, templates
 from Routers import presentations
 from Database import database
-import utils
 
 
 @asynccontextmanager
@@ -26,7 +24,7 @@ app = FastAPI(debug=True, lifespan=lifespan)
 
 # --------------------- mnt dirs
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/presentation_asset", StaticFiles(directory="presentation_asset"), name="/presentation_asset")
+app.mount("/presentation_asset", StaticFiles(directory="presentation_asset"), name="presentation_asset")
 # -----------------
 
 # ----------------- Routers

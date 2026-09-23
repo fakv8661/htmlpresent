@@ -15,9 +15,8 @@ router = APIRouter(tags=['presentations'])
 async def prsentationpg(request: Request):
     # LEGACY!!!
     # убрать после рекода фронтенда
-    presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations())
+    presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations(), request)
     # вот это
-    
     return templates.TemplateResponse(
         request,
         "presentation_page.html",
@@ -29,12 +28,12 @@ async def presentationgt(present_id: int, request: Request):
     present = await database.PresentationDatabase.GetPresentationByID(present_id)
     if present is None:
         return RedirectResponse(url="/")
-    if os.path.exists(os.path.join("templates/presentations", present.html_file)):
-        if "html" in present.html_file.split("."):
-            return templates_present.TemplateResponse(request, present.html_file)
+    if os.path.exists(os.path.join("templates/presentations", present.file)):
+        if "html" in present.file.split("."):
+            return templates_present.TemplateResponse(request, present.file)
         else:
             return FileResponse(
-            path=f"presentations/{present.html_file}",
+            path=f"presentations/{present.file}",
             media_type="application/pdf",
             filename=f"presentation_{id}.pdf"
         )
@@ -44,6 +43,6 @@ async def presentationgt(present_id: int, request: Request):
 
 @router.get("/presentations")
 async def presentationlst(request: Request):
-    presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations())
+    presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations(), request)
 
     return JSONResponse(presentations)
