@@ -1,0 +1,48 @@
+/* Стили, общие для всех страниц */
+
+:root {
+  /* Цветовая палитра (светлая тема) */
+  --color-background: #f3f0ed;
+  --color-background-dark: #e1d9d1;
+  --color-background-darker: #cec2b6;
+  --color-background-shadow: #2b231c7f;
+
+  --color-primary: #193497;
+  --color-primary-dark: #102365;
+  --color-primary-darker: #0a153d;
+
+  --color-accent: #eda398;
+  --color-accent-dark: #e78474;
+  --color-accent-darker: #e0614d;
+
+  --color-text: #282828;
+  --color-text-secondary: #696969;
+
+  /* Размеры */
+  --size-xxs: 4px;
+  --size-xs: 8px;
+  --size-s: 12px;
+  --size-m: 16px;
+  --size-l: 32px;
+  --size-xl: 48px;
+  --size-xxl: 64px;
+
+  /* Шрифты */
+  --font-text: "Golos Text", sans-serif;
+}
+
+body,
+html {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-text);
+  color: var(--color-text);
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+}

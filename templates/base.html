@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <!-- Метаданные -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сайт группы ПР-104</title>
+
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Стили -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/3.0.1/modern-normalize.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/main.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Заголовок -->
+    {% block header %}
+    <header class="header">
+      <h1 class="website-title">
+        <a href="{{ url_for('mainpg') }}">Сайт группы ПР-104</a>
+      </h1>
+    </header>
+    {% endblock header %}
+
+    <!-- Основной контент -->
+    {% block body %} {% endblock body %}
+
+    <!-- Скрипты -->
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    {% block script %} {% endblock script %}
+  </body>
+</html>
