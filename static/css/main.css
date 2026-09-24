@@ -5,6 +5,8 @@
   --color-background: #f9fafb;
   --color-background-dark: #f3f4f6;
 
+  --color-shadow: #1018282f;
+
   --color-primary: #f3f4f6;
   --color-primary-dark: #e5e7eb;
   --color-primary-darker: #d1d5dc;
@@ -48,6 +50,18 @@ body {
   background: var(--color-background);
   display: flex;
   flex-direction: column;
+}
+
+.modal {
+  outline: none;
+  border: none;
+  border-radius: var(--size-s);
+  box-shadow: 0 6px 16px 2px var(--color-shadow);
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
 }
 
 .input {
@@ -156,6 +170,20 @@ tbody tr:last-child > th {
   border-bottom: none;
 }
 
+.presentation-row {
+  background: var(--color-primary);
+  transition: background 0.1s ease;
+  cursor: pointer;
+}
+
+.presentation-row:hover {
+  background: var(--color-primary-dark);
+}
+
+.presentation-row:active {
+  background: var(--color-primary-darker);
+}
+
 .section-header {
   font-size: 1.8rem;
   color: var(--color-accent);
@@ -204,7 +232,7 @@ tbody tr:last-child > th {
   gap: var(--size-xxs);
 }
 
-.description {
+.section-description {
   color: var(--color-text-secondary);
   line-height: 1.5;
 }
@@ -223,6 +251,62 @@ tbody tr:last-child > th {
   height: 100%;
   flex-grow: 1;
   font-size: 1rem;
+}
+
+.presentation-modal {
+  width: max(400px, 10%);
+  height: max(500px, 10%);
+  padding: 0;
+  overflow: hidden;
+}
+
+.presentation-modal .preview {
+  height: 60%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.presentation-modal .preview > .vignette {
+  background: linear-gradient(#ffffff00 70%, #ffffffff 99%);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.presentation-modal .info {
+  padding: var(--size-m);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.presentation-modal .info .authors {
+  color: var(--color-text);
+  font-size: 1rem;
+  margin: var(--size-s) 0;
+  font-style: italic;
+}
+
+.presentation-modal .info .title {
+  color: var(--color-text);
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.presentation-modal .info .description {
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  line-height: 1lh;
+  margin: 0;
+}
+
+.presentation-modal:open {
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 600px) {

@@ -1,5 +1,41 @@
 // Скрипт страницы `main_page.html`
 
+const MODAL = document.getElementById("presentation-modal");
+MODAL.addEventListener("click", (e) => {
+  if (MODAL.open) {
+    const rect = MODAL.getBoundingClientRect();
+    const outside =
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom;
+
+    if (outside) {
+      MODAL.close();
+    }
+  }
+});
+
+async function showModal(id) {
+  const response = await fetch("/presentations");
+
+  if (response.ok) {
+    MODAL.showModal();
+    const json = await response.json();
+    let current = null;
+    json.forEach((value) => {
+      if (value.id == id) {
+        current = value;
+      }
+    });
+
+    document.getElementById("modal-title").innerText = current.title;
+    document.getElementById("modal-authors").innerText = current.authors;
+    document.getElementById("modal-description").innerText =
+      current.description;
+  }
+}
+
 async function updatePresentions(search = "") {
   const response = await fetch("/presentations");
   if (response.ok) {
@@ -9,9 +45,9 @@ async function updatePresentions(search = "") {
 
     STATS.innerText = json.length;
     TABLE.innerHTML = "";
-    json.forEach((value, index) => {
+    json.forEach((value) => {
       const row = `
-      <tr>
+      <tr class="presentation-row" onclick="showModal(${value.id})">
       <th scope="row">
       <span class="format-icon">
       HTML
