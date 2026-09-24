@@ -7,8 +7,39 @@
 
 <!-- Разметка -->
 {% block body %}
-<main class="main">
-  <button type="button" id="presentations-btn">Презентации</button>
-  <button type="button" id="achievements-btn">Достижения</button>
+<main class="main-container">
+  <h2 class="section-header">Презентации</h2>
+  <p class="description">
+    Здесь хранятся все наши презентации.<br />Можно скачать или посмотреть на
+    сайте.
+  </p>
+  <div class="presentations-search">
+    <div class="searchbar">
+      <input
+        type="search"
+        id="searchbar"
+        class="searchbar input"
+        placeholder="Поиск"
+      />
+    </div>
+  </div>
+  <div class="result-stats">
+    Найдено <span id="found-result"></span> презентаций
+  </div>
+  <div class="table-wrapper">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="th-title" scope="col">Название</th>
+          <th class="th-author" scope="col">Автор(ы)</th>
+          <!-- <th class="th-category" scope="col">Категория</th>
+          -->
+          <!-- <th class="th-date" scope="col">Дата создания</th>
+          -->
+        </tr>
+      </thead>
+      <tbody id="presentations-table"></tbody>
+    </table>
+  </div>
 </main>
 {% endblock %}

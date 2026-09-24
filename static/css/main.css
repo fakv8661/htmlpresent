@@ -2,21 +2,22 @@
 
 :root {
   /* Цветовая палитра (светлая тема) */
-  --color-background: #f3f0ed;
-  --color-background-dark: #e1d9d1;
-  --color-background-darker: #cec2b6;
-  --color-background-shadow: #2b231c7f;
+  --color-background: #f9fafb;
+  --color-background-dark: #f3f4f6;
 
-  --color-primary: #193497;
-  --color-primary-dark: #102365;
-  --color-primary-darker: #0a153d;
+  --color-primary: #f3f4f6;
+  --color-primary-dark: #e5e7eb;
+  --color-primary-darker: #d1d5dc;
 
-  --color-accent: #eda398;
-  --color-accent-dark: #e78474;
-  --color-accent-darker: #e0614d;
+  --color-accent-brighter: #738ce8;
+  --color-accent-bright: #4b6ce2;
+  --color-accent: #193497;
+  --color-accent-dark: #102365;
+  --color-accent-darker: #0a153d;
 
-  --color-text: #282828;
-  --color-text-secondary: #696969;
+  --color-text: #030712;
+  --color-text-secondary: #364153;
+  --color-text-inverse: #f9fafb;
 
   /* Размеры */
   --size-xxs: 4px;
@@ -26,6 +27,8 @@
   --size-l: 32px;
   --size-xl: 48px;
   --size-xxl: 64px;
+
+  --container-width: 1200px;
 
   /* Шрифты */
   --font-text: "Golos Text", sans-serif;
@@ -45,4 +48,187 @@ body {
   background: var(--color-background);
   display: flex;
   flex-direction: column;
+}
+
+.input {
+  background: var(--color-background-dark);
+  border: solid 3px var(--color-primary-dark);
+  border-radius: var(--size-xs);
+  padding: var(--size-xs);
+  outline: none;
+  transition: border-color 0.1s ease;
+  color: var(--color-text);
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.input:focus {
+  border-color: var(--color-accent);
+}
+
+.button {
+  border-radius: var(--size-xs);
+  background: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  color: var(--color-text-inverse);
+  transition: background 0.1s ease;
+}
+
+.button:hover {
+  background: var(--color-accent-dark);
+}
+
+.button:active {
+  background: var(--color-accent-darker);
+}
+
+.table-wrapper {
+  background: var(--color-primary);
+  border: solid 3px var(--color-primary-darker);
+  border-radius: var(--size-s);
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.format-icon {
+  background: var(--color-accent);
+  border-radius: var(--size-xs);
+  height: 36px;
+  width: 36px;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--size-s);
+  padding: var(--size-xxs);
+  color: var(--color-text-inverse);
+}
+
+th,
+td {
+  padding: var(--size-s);
+  border-bottom: solid 3px var(--color-primary-darker);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.th-title {
+  width: 40%;
+}
+
+.th-author {
+  width: 20%;
+  font-style: italic;
+}
+
+.th-category {
+  width: 20%;
+}
+
+.th-date {
+  width: 20%;
+}
+
+thead th {
+  color: var(--color-text-secondary);
+  text-align: start;
+}
+
+th-title th-author th-category th-date tbody th {
+  color: var(--color-accent-bright);
+  text-align: start;
+}
+
+tbody tr:last-child > td,
+tbody tr:last-child > th {
+  border-bottom: none;
+}
+
+.section-header {
+  font-size: 1.8rem;
+  color: var(--color-accent);
+  margin: var(--size-m) 0;
+}
+
+.main-container {
+  flex-grow: 1;
+  padding: var(--size-s);
+  max-width: var(--container-width);
+  align-self: center;
+  width: 100%;
+}
+
+.header {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  padding: var(--size-m);
+  display: flex;
+  margin: var(--size-s);
+  border-radius: var(--size-xs);
+  user-select: none;
+}
+
+.website-title {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.website-title-link {
+  text-decoration: none;
+  color: var(--color-text-inverse);
+  font-weight: bolder;
+  letter-spacing: 1px;
+}
+
+.result-stats {
+  margin: var(--size-s) 0;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+}
+
+.searchbar {
+  display: flex;
+  flex-direction: row;
+  gap: var(--size-xxs);
+}
+
+.description {
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.presentations-search {
+  margin-top: var(--size-l);
+  display: flex;
+  width: 100%;
+}
+
+.presentations-search .searchbar {
+  flex-grow: 1;
+}
+
+.searchbar input {
+  height: 100%;
+  flex-grow: 1;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .website-title {
+    text-align: center;
+    font-size: 1.4rem;
+  }
 }
