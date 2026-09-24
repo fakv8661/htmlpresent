@@ -6,7 +6,7 @@ from sqlalchemy import select
 from Database import db_setting as dbs
 from Database import models
 
-engine = create_async_engine(dbs.get_dburl(), echo=True)
+engine = create_async_engine(dbs.get_dburl(), echo=True, pool_size=20, max_overflow=40)
 session_factory = async_sessionmaker(engine)
 
 
