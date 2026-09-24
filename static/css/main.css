@@ -15,7 +15,7 @@
   --color-accent-dark: #102365;
   --color-accent-darker: #0a153d;
 
-  --color-text: #030712;
+  --color-text: #1e2939;
   --color-text-secondary: #364153;
   --color-text-inverse: #f9fafb;
 
@@ -131,7 +131,6 @@ td {
 
 .th-author {
   width: 20%;
-  font-style: italic;
 }
 
 .th-category {
