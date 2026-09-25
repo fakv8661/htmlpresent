@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 import os
+import asyncio
 
 import uvicorn
 from fastapi import FastAPI
@@ -9,12 +10,15 @@ from fastapi.staticfiles import StaticFiles
 from templates_config import templates_present, templates
 from Routers import presentations
 from Database import database
+from AdminPanel import bot
 
+
+bot_task = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await database.InitDatabase()
-
+    asyncio.create_task(bot.run_bot(), name="yasha_lava")
     yield
 
     await database.engine.dispose()
