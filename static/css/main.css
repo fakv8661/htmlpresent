@@ -41,6 +41,7 @@
   --transition-color: background 0.1s ease, border-color 0.1s ease;
 }
 
+/* #region Сброс стилей и глобальные стили */
 *,
 *::before,
 *::after {
@@ -50,41 +51,71 @@
 body,
 html {
   width: 100%;
+  min-width: 375px;
   height: 100%;
+  min-height: 667px;
   margin: 0;
 }
 
 body {
-  font-family: var(--font-text);
-  color: var(--color-text);
-  background: var(--color-background);
   display: flex;
   flex-direction: column;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-text);
 }
 
-/* Модальное окно */
-.modal {
-  border: none;
-  border-radius: var(--border-radius-s);
-  box-shadow: 0 6px 16px 2px var(--color-shadow);
-  outline: none;
+img {
+  color: var(--color-text-secondary);
+}
+/* #endregion */
+
+/* #region Глобальные компоненты */
+/* Основной контейнер */
+.main-container {
+  flex-grow: 1;
+  align-self: center;
+  width: 100%;
+  max-width: var(--container-width);
+  padding: var(--size-s);
 }
 
-.modal::backdrop {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
+/* Шапка сайта */
+.header {
+  display: flex;
+  margin: var(--size-s);
+  padding: var(--size-m);
+  border-radius: var(--border-radius-xs);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  user-select: none;
 }
 
-/* Инпут */
+/* Название сайта */
+.website-title {
+  margin: 0;
+  font-weight: bolder;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+.website-title-link {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+/* #endregion */
+
+/* #region Базовые компоненты */
+/* Поля ввода */
 .input {
-  background: var(--color-background-dark);
+  min-width: 0;
+  padding: var(--size-xs);
   border: solid 3px var(--color-primary-dark);
   border-radius: var(--border-radius-xs);
-  padding: var(--size-xs);
-  color: var(--color-text);
   outline: none;
+  background: var(--color-background-dark);
+  color: var(--color-text);
   transition: var(--transition-color);
-  min-width: 0;
 }
 
 .input::placeholder {
@@ -95,21 +126,21 @@ body {
   border-color: var(--color-accent);
 }
 
-/* Кнопка */
+/* Кнопки */
 .button {
-  background: var(--color-accent);
-  border: none;
-  border-radius: var(--border-radius-xs);
-  color: var(--color-text-inverse);
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
   gap: var(--size-xs);
+  border: none;
+  border-radius: var(--border-radius-xs);
   outline: none;
-  transition: background 0.1s ease;
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-weight: bold;
   text-decoration: none;
+  cursor: pointer;
+  transition: background 0.1s ease;
 }
 
 .button:hover {
@@ -120,38 +151,43 @@ body {
   background: var(--color-accent-darker);
 }
 
-/* Обертка таблицы */
-.table-wrapper {
-  background: var(--color-primary);
-  border: solid 3px var(--color-primary-darker);
+/* Модальное окно */
+.modal {
+  border: none;
   border-radius: var(--border-radius-s);
+  outline: none;
+  box-shadow: 0 6px 16px 2px var(--color-shadow);
+}
+
+.modal::backdrop {
+  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Заголовок секции */
+.section-header {
+  margin: var(--size-m) 0;
+  color: var(--color-accent);
+  font-size: 1.8rem;
+}
+/* #endregion */
+
+/* #region Таблица */
+.table-wrapper {
   overflow-x: auto;
   overflow-y: hidden;
+  border: solid 3px var(--color-primary-darker);
+  border-radius: var(--border-radius-s);
+  background: var(--color-primary);
 }
 
-/* Таблица */
 .table {
+  width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  width: 100%;
 }
 
-/* Иконка формата */
-.format-icon {
-  background: var(--color-accent);
-  border-radius: var(--border-radius-xs);
-  height: 36px;
-  width: 36px;
-  font-size: 10px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: var(--size-s);
-  padding: var(--size-xxs);
-  color: var(--color-text-inverse);
-}
-
-/* Ячейки таблицы */
+/* Ячейки */
 th,
 td {
   padding: var(--size-s);
@@ -160,7 +196,7 @@ td {
   white-space: nowrap;
 }
 
-/* Колонки таблицы */
+/* Колонки */
 .th-title {
   width: 40%;
 }
@@ -177,7 +213,7 @@ td {
   width: 20%;
 }
 
-/* Заголовки таблицы */
+/* Заголовки */
 thead th {
   color: var(--color-text-secondary);
   text-align: start;
@@ -188,61 +224,23 @@ tbody tr:last-child > th {
   border-bottom: none;
 }
 
-/* Строка презентации */
-.presentation-row {
+/* Кликабельная строка */
+.clickable-row {
   background: var(--color-primary);
-  transition: background 0.1s ease;
   cursor: pointer;
+  transition: background 0.1s ease;
 }
 
-.presentation-row:hover {
+.clickable-row:hover {
   background: var(--color-primary-dark);
 }
 
-.presentation-row:active {
+.clickable-row:active {
   background: var(--color-primary-darker);
 }
+/* #endregion */
 
-/* Заголовок секции */
-.section-header {
-  font-size: 1.8rem;
-  color: var(--color-accent);
-  margin: var(--size-m) 0;
-}
-
-/* Основной контейнер */
-.main-container {
-  flex-grow: 1;
-  padding: var(--size-s);
-  max-width: var(--container-width);
-  align-self: center;
-  width: 100%;
-}
-
-/* Шапка сайта */
-.header {
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-  padding: var(--size-m);
-  display: flex;
-  margin: var(--size-s);
-  border-radius: var(--border-radius-xs);
-  user-select: none;
-}
-
-/* Название сайта */
-.website-title {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: bolder;
-  letter-spacing: 1px;
-}
-
-.website-title-link {
-  text-decoration: none;
-  color: var(--color-text-inverse);
-}
-
+/* #region Главная страница */
 /* Статистика результатов */
 .result-stats {
   margin: var(--size-s) 0;
@@ -251,13 +249,6 @@ tbody tr:last-child > th {
 }
 
 /* Поисковая строка */
-.searchbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--size-xxs);
-}
-
 .searchbar .icon {
   color: var(--color-text-secondary);
 }
@@ -270,9 +261,12 @@ tbody tr:last-child > th {
 
 /* Поиск презентаций */
 .presentations-search {
-  margin-top: var(--size-l);
   display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 100%;
+  margin-top: var(--size-l);
+  gap: var(--size-xxs);
 }
 
 .presentations-search .searchbar {
@@ -280,12 +274,12 @@ tbody tr:last-child > th {
 }
 
 .searchbar input {
-  height: 100%;
   flex-grow: 1;
+  height: 100%;
   font-size: 1rem;
 }
 
-/* Модальное окно презентации */
+/* #region Модальное окно презентации */
 .presentation-modal {
   width: max(400px, 10%);
   height: max(500px, 10%);
@@ -294,68 +288,67 @@ tbody tr:last-child > th {
 }
 
 .presentation-modal::backdrop {
-  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .presentation-modal .preview {
-  height: 60%;
-  overflow: hidden;
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
-  position: relative;
+  height: 60%;
+  overflow: hidden;
 }
 
 .presentation-modal .preview > .vignette {
-  background: linear-gradient(#ffffff00 70%, #ffffffff 99%);
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
+  background: linear-gradient(#ffffff00 70%, #ffffffff 99%);
 }
 
 .presentation-modal .info {
-  padding: var(--size-m);
   display: flex;
-  flex-direction: column;
   flex-grow: 1;
+  flex-direction: column;
+  padding: var(--size-m);
   overflow-y: auto;
 }
 
 .presentation-modal .info .authors {
-  color: var(--color-text);
-  font-size: 1rem;
-  margin: var(--size-s) 0;
-  font-style: italic;
   display: flex;
   align-items: center;
   justify-content: start;
+  margin: var(--size-s) 0;
   gap: var(--size-xxs);
+  color: var(--color-text);
+  font-style: italic;
+  font-size: 1rem;
 }
 
 .presentation-modal .info .authors svg {
-  height: 1rlh;
   width: 1rlh;
+  height: 1rlh;
 }
 
 .presentation-modal .info .title {
+  margin: 0;
   color: var(--color-text);
   font-size: 1.4rem;
-  margin: 0;
 }
 
 .presentation-modal .info .description {
+  margin: 0;
   color: var(--color-text-secondary);
   font-size: 0.8rem;
   line-height: 1lh;
-  margin: 0;
 }
 
 .presentation-modal .actions {
   display: flex;
   align-items: stretch;
   justify-content: stretch;
-  flex-wrap: nowrap;
   padding: var(--size-xs);
   gap: var(--size-xs);
 }
@@ -369,11 +362,28 @@ tbody tr:last-child > th {
   display: flex;
   flex-direction: column;
 }
+/* #endregion */
+/* #endregion */
+
+/* Иконка формата */
+.format-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-right: var(--size-s);
+  padding: var(--size-xxs);
+  border-radius: var(--border-radius-xs);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-size: 10px;
+}
 
 /* Адаптивность */
 @media (max-width: 600px) {
   .website-title {
-    text-align: center;
     font-size: 1.4rem;
+    text-align: center;
   }
 }

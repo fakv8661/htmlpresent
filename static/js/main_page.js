@@ -153,7 +153,7 @@ async function updatePresentions(search = "") {
     let resultHTML = "";
     json.forEach((value) => {
       const row = `
-      <tr class="presentation-row" onclick="showModal(${value.id})">
+      <tr class="clickable-row" onclick="showModal(${value.id})">
       <th scope="row">
       <span class="format-icon">
       HTML
