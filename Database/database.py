@@ -52,6 +52,7 @@ class PresentationDatabase():
                 author=author,
                 description=description,
                 file=file,
+                preview_image=image
             )
 
             session.add(presentation)
