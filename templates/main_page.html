@@ -10,7 +10,7 @@
 
 <dialog id="presentation-modal" class="presentation-modal modal">
   <div class="preview">
-    <img src="" alt="не будет вам картинки >:(" />
+    <img src="" id="modal-preview" alt="Нет предпросмотра" />
     <div class="vignette"></div>
   </div>
   <div class="info">
@@ -21,11 +21,11 @@
     <p class="description" id="modal-description"></p>
   </div>
   <div class="actions">
-    <button type="button" class="button" id="view">
+    <a type="button" class="button" id="presentation-view" target="_blank">
       <i data-lucide="presentation"></i>
       Смотреть
-    </button>
-    <button type="button" class="button" id="view">
+    </a>
+    <button type="button" class="button" id="presentation-download">
       <i data-lucide="download"></i>
       Скачать
     </button>

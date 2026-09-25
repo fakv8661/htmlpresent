@@ -109,6 +109,7 @@ body {
   gap: var(--size-xs);
   outline: none;
   transition: background 0.1s ease;
+  text-decoration: none;
 }
 
 .button:hover {
