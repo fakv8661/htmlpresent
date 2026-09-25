@@ -93,6 +93,9 @@ body {
   outline: none;
   color: var(--color-text-inverse);
   transition: background 0.1s ease;
+  gap: var(--size-xs);
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .button:hover {
@@ -229,7 +232,12 @@ tbody tr:last-child > th {
 .searchbar {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: var(--size-xxs);
+}
+
+.searchbar .icon {
+  color: var(--color-text-secondary);
 }
 
 .section-description {
@@ -289,6 +297,15 @@ tbody tr:last-child > th {
   font-size: 1rem;
   margin: var(--size-s) 0;
   font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: var(--size-xxs);
+}
+
+.presentation-modal .info .authors svg {
+  height: 1rlh;
+  width: 1rlh;
 }
 
 .presentation-modal .info .title {
@@ -302,6 +319,20 @@ tbody tr:last-child > th {
   font-size: 0.8rem;
   line-height: 1lh;
   margin: 0;
+}
+
+.presentation-modal .actions {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  flex-wrap: nowrap;
+  padding: var(--size-xs);
+  gap: var(--size-xs);
+}
+
+.presentation-modal .actions .button {
+  flex-grow: 1;
+  padding: var(--size-s);
 }
 
 .presentation-modal:open {

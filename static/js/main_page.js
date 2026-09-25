@@ -42,15 +42,15 @@ async function updatePresentions(search = "") {
     const TABLE = document.getElementById("presentations-table");
     const STATS = document.getElementById("found-result");
     const json = await response.json();
+    let resultCount = 0;
 
-    STATS.innerText = json.length;
-    TABLE.innerHTML = "";
+    let resultHTML = "";
     json.forEach((value) => {
       const row = `
       <tr class="presentation-row" onclick="showModal(${value.id})">
       <th scope="row">
       <span class="format-icon">
-      HTML
+      ХЗ
       </span>
       ${value.title}
       </th>
@@ -66,9 +66,23 @@ async function updatePresentions(search = "") {
         value.authors.toLowerCase().includes(search.toLowerCase()) ||
         value.description.toLowerCase().includes(search.toLowerCase())
       ) {
-        TABLE.innerHTML += row;
+        resultHTML += row;
+        resultCount += 1;
       }
     });
+
+    if (resultCount === 0) {
+      document.getElementById("table-wrapper").hidden = true;
+      STATS.innerText = "Ничего не найдено";
+    } else if (resultCount === json.length) {
+      document.getElementById("table-wrapper").hidden = false;
+      STATS.innerText = `Всего ${resultCount} презентаций`;
+    } else {
+      document.getElementById("table-wrapper").hidden = false;
+      STATS.innerText = `Найдено ${resultCount} презентаций`;
+    }
+
+    TABLE.innerHTML = resultHTML;
   }
 }
 

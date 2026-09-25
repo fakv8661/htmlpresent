@@ -14,24 +14,21 @@
     <div class="vignette"></div>
   </div>
   <div class="info">
-    <h3 class="title" id="modal-title">Title</h3>
-    <p class="authors" id="modal-authors">A.A Author, A.A.Author</p>
-    <p class="description" id="modal-description">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos sit
-      exercitationem similique debitis eum beatae laborum facilis molestiae
-      cupiditate ad asperiores, architecto itaque. Deleniti consequuntur cumque
-      eveniet, autem et nostrum? Lorem ipsum dolor, sit amet consectetur
-      adipisicing elit. Quos sit exercitationem similique debitis eum beatae
-      laborum facilis molestiae cupiditate ad asperiores, architecto itaque.
-      Deleniti consequuntur cumque eveniet, autem et nostrum? Lorem ipsum dolor,
-      sit amet consectetur adipisicing elit. Quos sit exercitationem similique
-      debitis eum beatae laborum facilis molestiae cupiditate ad asperiores,
-      architecto itaque. Deleniti consequuntur cumque eveniet, autem et nostrum?
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos sit
-      exercitationem similique debitis eum beatae laborum facilis molestiae
-      cupiditate ad asperiores, architecto itaque. Deleniti consequuntur cumque
-      eveniet, autem et nostrum?
+    <h3 class="title" id="modal-title"></h3>
+    <p class="authors">
+      <i data-lucide="user"></i><span id="modal-authors"></span>
     </p>
+    <p class="description" id="modal-description"></p>
+  </div>
+  <div class="actions">
+    <button type="button" class="button" id="view">
+      <i data-lucide="presentation"></i>
+      Смотреть
+    </button>
+    <button type="button" class="button" id="view">
+      <i data-lucide="download"></i>
+      Скачать
+    </button>
   </div>
 </dialog>
 
@@ -43,6 +40,7 @@
   </p>
   <div class="presentations-search">
     <div class="searchbar">
+      <i data-lucide="search" class="icon"></i>
       <input
         type="search"
         id="searchbar"
@@ -51,10 +49,8 @@
       />
     </div>
   </div>
-  <div class="result-stats">
-    Найдено <span id="found-result"></span> презентаций
-  </div>
-  <div class="table-wrapper">
+  <div class="result-stats" id="found-result"></div>
+  <div class="table-wrapper" id="table-wrapper">
     <table class="table">
       <thead>
         <tr>
