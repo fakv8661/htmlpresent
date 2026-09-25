@@ -33,9 +33,9 @@ async def presentationgt(present_id: int, request: Request):
             return templates_present.TemplateResponse(request, present.file)
         else:
             return FileResponse(
-            path=f"presentations/{present.file}",
-            media_type="application/pdf",
-            filename=f"presentation_{id}.pdf"
+            path=f"templates/presentations/{present.file}",
+            filename=f"presentation_{id}.pdf",
+            headers={"Content-Disposition": "inline"}
         )
 
     else:

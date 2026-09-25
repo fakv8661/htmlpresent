@@ -11,17 +11,22 @@ from templates_config import templates_present, templates
 from Routers import presentations
 from Database import database
 from AdminPanel import bot
+import path_config
 
 
 bot_task = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    path_config.path_tests()
+    
     await database.InitDatabase()
-    asyncio.create_task(bot.run_bot(), name="yasha_lava")
+    bot_task = asyncio.create_task(bot.run_bot(), name="telegram_admin")
+
     yield
 
     await database.engine.dispose()
+    bot_task.cancel("Exit")
 
 
 app = FastAPI(debug=True, lifespan=lifespan)
