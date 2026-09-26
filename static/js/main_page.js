@@ -110,7 +110,7 @@ table.innerHTML = "";
 
 // Запрос на сервер
 async function onLoad() {
-  const response = await fetch("/presentations");
+  const response = await fetch("/pres");
   if (response.ok) {
     const json = await response.json();
     presentations = json;
@@ -146,7 +146,7 @@ presentationModal.addEventListener("click", (e) => {
 async function showModal(id) {
   const current = presentations.find((value) => value.id == id);
 
-  const ENDPOINT = `/presentation/${current.id}`;
+  const ENDPOINT = `/pres/${current.id}`;
 
   document.getElementById("presentation-download").onclick = async (e) => {
     const FILE = await fetch(ENDPOINT);
