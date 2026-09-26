@@ -522,6 +522,22 @@ tbody tr:last-child > th {
   font-size: 10px;
 }
 
+.format-icon.pdf {
+  background: #c11007;
+}
+
+.format-icon.html {
+  background: #e1712b;
+}
+
+.format-icon.odp {
+  background: #36bba7;
+}
+
+.format-icon.pptx {
+  background: #ffdf20;
+}
+
 /* Адаптивность */
 @media (max-width: 600px) {
   .website-title {

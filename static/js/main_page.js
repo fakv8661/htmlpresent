@@ -178,11 +178,13 @@ async function updatePresentions(search = "") {
 
   let resultHTML = "";
   presentations.forEach((value) => {
+    const type = value.file_type.trim();
+    console.log(type);
     const row = `
       <tr class="clickable-row" onclick="showModal(${value.id})">
       <th scope="row" class="th-title">
-      <span class="format-icon">
-      HTML
+      <span class="format-icon ${type.toLowerCase()}">
+      ${type.toUpperCase()}
       </span>
       ${value.title}
       </th>
