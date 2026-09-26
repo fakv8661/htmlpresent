@@ -6,4 +6,46 @@
 {% endblock %}
 
 <!-- Разметка -->
-{% block body %} Логин {% endblock %}
+{% block body %}
+<div class="login-panel panel">
+  <h2 class="section-header">Вход</h2>
+  <form action="" class="login-form">
+    <label for="passkey-input">Введите логин:</label>
+    <input
+      type="text"
+      name="login"
+      id="login-input"
+      class="input"
+      placeholder="Логин"
+      required
+    />
+    <label for="passkey-input">Введите пароль:</label>
+    <div class="pasword-input input">
+      <input
+        type="password"
+        name="password"
+        id="password-input"
+        placeholder="Пароль"
+        required
+      />
+      <button
+        class="flat-button password-toggle concealed"
+        id="password-toggle"
+        type="button"
+        onclick="togglePasswordVisibility()"
+      >
+        <i data-lucide="eye" class="non-concealed"></i>
+        <i data-lucide="eye-off" class="concealed"></i>
+      </button>
+    </div>
+    <button type="submit" class="button">
+      <i data-lucide="log-in"></i>
+      Войти
+    </button>
+  </form>
+  <p class="section-description">
+    Получить логин и пароль <br />можно у
+    <a href="#" class="link">администрации сайта</a>.
+  </p>
+</div>
+{% endblock %}

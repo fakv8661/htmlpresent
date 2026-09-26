@@ -164,6 +164,37 @@ img {
 .button:active {
   background: var(--color-accent-darker);
 }
+/* Невидимая кнопка */
+.flat-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  transition:
+    color 0.1s ease,
+    transform 0.1s ease;
+}
+
+.flat-button:hover {
+  transform: scale(1.1);
+  color: var(--color-accent-bright);
+}
+
+.flat-button:active {
+  transform: scale(0.9);
+  color: var(--color-accent-darker);
+}
+
+/* Панель */
+.panel {
+  padding: var(--size-m);
+  border: solid 3px var(--color-primary-darker);
+  border-radius: var(--border-radius-m);
+  background: var(--color-primary);
+}
 
 /* Модальное окно */
 .modal {
@@ -389,6 +420,57 @@ tbody tr:last-child > th {
   flex-direction: column;
 }
 /* #endregion */
+/* #endregion */
+
+/* #region Логин */
+.login-panel {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: min(calc(100% - 2 * var(--size-s)), 450px);
+  margin: auto;
+}
+
+.login-panel .section-header {
+  margin: var(--size-xs) 0 var(--size-l) 0;
+  text-align: center;
+}
+
+.login-panel .section-description {
+  margin: var(--size-l) 0 var(--size-m) 0;
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--size-m);
+  gap: var(--size-s);
+  border-bottom: solid 3px var(--color-primary-darker);
+}
+
+.password-toggle {
+  /* height: 100%; */
+  padding: 0 var(--size-xs);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.password-toggle.concealed > .concealed {
+  display: none;
+}
+
+.password-toggle.concealed > .non-concealed {
+  display: initial;
+}
+
+.password-toggle > .concealed {
+  display: initial;
+}
+
+.password-toggle > .non-concealed {
+  display: none;
+}
 /* #endregion */
 
 /* Иконка формата */
