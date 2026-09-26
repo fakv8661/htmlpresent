@@ -217,8 +217,6 @@ img {
   transform: scale(0.98);
   background: var(--color-accent-darker);
 }
-<<<<<<< Updated upstream
-=======
 
 .button:disabled {
   background: var(--color-accent-brighter);
@@ -256,7 +254,6 @@ img {
   border-radius: var(--border-radius-m);
   background: var(--color-primary);
 }
->>>>>>> Stashed changes
 
 /* Модальное окно */
 .modal {
