@@ -1,0 +1,19 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.jj": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  "explorer.autoRevealExclude": {
+    "__pycache__": true,
+    ".venv": true
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "pyproject.toml": "alembic.ini, poetry.lock, .env"
+  },
+  "files.eol": "\n"
+}
