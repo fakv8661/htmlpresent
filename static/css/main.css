@@ -411,10 +411,24 @@ tbody tr:last-child > th {
 .presentation-modal .preview {
   display: flex;
   position: relative;
+  flex-grow: 1;
   align-items: center;
   justify-content: center;
-  height: 60%;
+  height: 50%;
+  min-height: 50%;
   overflow: hidden;
+}
+
+.presentation-modal .preview.hidden {
+  display: none;
+}
+
+.presentation-modal .preview img {
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  text-align: center;
+  vertical-align: center;
 }
 
 .presentation-modal .preview > .vignette {

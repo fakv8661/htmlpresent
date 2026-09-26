@@ -153,8 +153,17 @@ async function showModal(id) {
     const TEXT = await FILE.text();
     downloadFile(toSafeFileName(current.title) + ".html", TEXT, "text/html");
   };
+
+  const previewWrapper = document.getElementById("modal-preview-wrapper");
   if (current.cover !== null) {
+    if (previewWrapper.classList.contains("hidden")) {
+      previewWrapper.classList.remove("hidden");
+    }
     document.getElementById("modal-preview").src = current.cover;
+  } else {
+    if (!previewWrapper.classList.contains("hidden")) {
+      previewWrapper.classList.add("hidden");
+    }
   }
   document.getElementById("presentation-view").href = ENDPOINT;
   document.getElementById("modal-title").innerText = current.title;
