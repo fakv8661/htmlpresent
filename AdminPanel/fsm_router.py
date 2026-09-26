@@ -102,3 +102,63 @@ async def presentationadd_document(message: Message, state: FSMContext):
 
     await message.answer("[+] Запрос на создание презентации отправлен")
     await state.clear()
+
+#------------------------------------------
+
+#--------------PRESENTATION HIDE-------------
+@router.message(fsm.PresentationHide.id)
+async def presentationhide_id(message: Message, state: FSMContext):
+    admin_id = await AdminPanel.GetAdminIDByTg(message.from_user.id)
+    if not message.text.isnumeric():
+        await message.answer("[!] Это не ID")
+        await state.clear()
+        return
+    
+    presentation_id = int(message.text)
+    presentation = await PresentationDatabase.GetPresentationByID(presentation_id, True)
+
+    if presentation.owner_id != admin_id:
+        await message.answer("[!] Это не ваша презентация")
+        await state.clear()
+        return
+
+    await state.update_data(id=presentation_id)
+    await message.answer(f"[~] Выберите действие\nПрезентация: {html.bold("Скрыта" if presentation.hidden else "Доступна")}",
+                         parse_mode='HTML',
+                         reply_markup=keyboard.GetShowHidePresentationKb(presentation.hidden))
+
+
+@router.callback_query(F.data.in_({'presentation_manage_show', 'presentation_manage_hide'}), fsm.PresentationHide.id)
+async def presentationmanage(callback: CallbackQuery, state: FSMContext):
+    message = callback.message
+
+    admin_id = await AdminPanel.GetAdminIDByTg(callback.from_user.id)
+    presentation_id = await state.get_value("id")
+    
+    if presentation_id is None:
+        await state.clear()
+        await message.answer("[!] ID не найден")
+        return
+
+    presentation = await PresentationDatabase.GetPresentationByID(presentation_id, True)
+
+    if presentation is None:
+        await state.clear()
+        await message.answer("[!] Презентация не найдена")
+        return
+
+    if presentation.owner_id != admin_id:
+        print(presentation.owner_id, "  ", admin_id)
+        await message.answer("[!] Это не ваша презентация")
+        await state.clear()
+        return
+
+    await message.answer(f"[~] Выберите действие\nПрезентация: {html.bold("Скрыта" if not presentation.hidden else "Доступна")}",
+                            parse_mode='HTML',
+                            reply_markup=keyboard.GetShowHidePresentationKb(not presentation.hidden))
+
+
+    await PresentationDatabase.HidePresentation(presentation_id, not presentation.hidden)
+    
+    
+    

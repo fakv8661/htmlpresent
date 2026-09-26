@@ -1,3 +1,4 @@
+from copy import deepcopy
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
@@ -17,11 +18,21 @@ PRESENTATION_LOCAL_MANAGE = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="[-] Удалить презентацию", callback_data="presentation_manage_delete")]
 ])
 
-def GetMainKeyboard(high_admin: bool=False):
+def GetMainKeyboard(high_admin: bool=False) -> InlineKeyboardMarkup:
     if not high_admin:
-        return ADMIN_KB
+        return deepcopy(ADMIN_KB)
     else:
-        builder = InlineKeyboardBuilder.from_markup(ADMIN_KB)
+        builder = InlineKeyboardBuilder.from_markup(deepcopy(ADMIN_KB))
         builder.row(InlineKeyboardButton(text="[*] Управление админами", callback_data="manage_admins"), 
             InlineKeyboardButton(text="[*] Управление презентациями", callback_data="manage_presentations"))
         return builder.as_markup()
+
+def GetShowHidePresentationKb(hidden: bool) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    if hidden:
+        builder.add(InlineKeyboardButton(text="[+] Показать", callback_data="presentation_manage_show"))
+    else:
+        builder.add(InlineKeyboardButton(text="[-] Скрыть", callback_data="presentation_manage_hide"))
+
+    builder.row(InlineKeyboardButton(text="[x] Отмена", callback_data="fsm_cancel"))
+    return builder.as_markup()

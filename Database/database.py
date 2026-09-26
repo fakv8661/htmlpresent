@@ -34,9 +34,10 @@ class PresentationDatabase():
         async with session_factory() as session:
             stmt = (
                 select(models.Presentation)
-                .where(models.Presentation.hidden == where_hidden,
-                       models.Presentation.id == id)
+                .where(models.Presentation.id == id)
             )
+            if not where_hidden:
+                stmt = stmt.where(models.Presentation.hidden == False)
 
             cur = await session.execute(stmt)
             
@@ -70,6 +71,23 @@ class PresentationDatabase():
             rows = cur.scalars().all()
 
             return rows
+
+    @staticmethod
+    async def HidePresentation(id: int, hidden: bool):
+        async with session_factory() as session:
+            stmt = (
+                select(models.Presentation)
+                .where(models.Presentation.id == id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            if row is not None:
+                row.hidden = hidden
+
+            await session.commit()
+
 
 
 class AdminPanel():

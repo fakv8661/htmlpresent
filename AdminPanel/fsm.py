@@ -6,3 +6,6 @@ class PresentationAdd(StatesGroup):
     description = State()
     image = State()
     file = State()
+
+class PresentationHide(StatesGroup):
+    id = State()

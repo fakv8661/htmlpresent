@@ -41,11 +41,13 @@ async def presentation_local(callback: CallbackQuery):
                                                         await PresentationDatabase.GetPresentationsByOwner(
                                                             await AdminPanel.GetAdminIDByTg(callback.from_user.id)
                                                         ))
-    await callback.message.answer(presentation_msg, parse_mode='HTML')
+    await callback.message.answer(presentation_msg, parse_mode='HTML', reply_markup=keyboard.PRESENTATION_LOCAL_MANAGE)
 
 @dp.callback_query(F.data == "presentation_manage_hideshow", tgfil.FAdmin(False))
-async def presentation_manage_hideshow(callback: CallbackQuery):
-    ...
+async def presentation_manage_hideshow(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("[+] Отправьте ID презентацию, которую хотите показать/скрыть")
+    await state.set_state(fsm.PresentationHide.id)
+    
 
 async def run_bot():
     print("[Telegram] Bot started")
