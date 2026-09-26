@@ -97,10 +97,39 @@ function toSafeFileName(text, options = {}) {
 }
 //#endregion
 
-const MODAL = document.getElementById("presentation-modal");
-MODAL.addEventListener("click", (e) => {
-  if (MODAL.open) {
-    const rect = MODAL.getBoundingClientRect();
+// Элементы
+let presentationModal = document.getElementById("presentation-modal");
+let table = document.getElementById("presentations-table");
+let search_stats = document.getElementById("found-result");
+
+// Переменные
+let presentations = [];
+
+window.onload = onLoad;
+table.innerHTML = "";
+
+// Запрос на сервер
+async function onLoad() {
+  const response = await fetch("/presentations");
+  if (response.ok) {
+    const json = await response.json();
+    presentations = json;
+  } else {
+    console.error("Server request failed.");
+  }
+  updatePresentions();
+}
+
+// Обработка ввода в поле поиска
+document.getElementById("searchbar").oninput = (e) => {
+  const SEARCH = document.getElementById("searchbar").value;
+  updatePresentions(SEARCH);
+};
+
+// Закрытие модального окна по клику за его пределами
+presentationModal.addEventListener("click", (e) => {
+  if (presentationModal.open) {
+    const rect = presentationModal.getBoundingClientRect();
     const outside =
       e.clientX < rect.left ||
       e.clientX > rect.right ||
@@ -108,51 +137,39 @@ MODAL.addEventListener("click", (e) => {
       e.clientY > rect.bottom;
 
     if (outside) {
-      MODAL.close();
+      presentationModal.close();
     }
   }
 });
 
+// Функция для отображения модального окна
 async function showModal(id) {
-  const response = await fetch("/presentations");
+  const current = presentations.find((value) => value.id == id);
 
-  if (response.ok) {
-    MODAL.showModal();
-    const json = await response.json();
-    let current = null;
-    json.forEach((value) => {
-      if (value.id == id) {
-        current = value;
-      }
-    });
+  const ENDPOINT = `/presentation/${current.id}`;
 
-    const ENDPOINT = `/presentation/${current.id}`;
+  document.getElementById("presentation-download").onclick = async (e) => {
     const FILE = await fetch(ENDPOINT);
     const TEXT = await FILE.text();
-
-    document.getElementById("presentation-download").onclick = (e) => {
-      downloadFile(toSafeFileName(current.title) + ".html", TEXT, "text/html");
-    };
-    document.getElementById("presentation-view").href = ENDPOINT;
+    downloadFile(toSafeFileName(current.title) + ".html", TEXT, "text/html");
+  };
+  if (current.cover !== null) {
     document.getElementById("modal-preview").src = current.cover;
-    document.getElementById("modal-title").innerText = current.title;
-    document.getElementById("modal-authors").innerText = current.authors;
-    document.getElementById("modal-description").innerText =
-      current.description;
   }
+  document.getElementById("presentation-view").href = ENDPOINT;
+  document.getElementById("modal-title").innerText = current.title;
+  document.getElementById("modal-authors").innerText = current.authors;
+  document.getElementById("modal-description").innerText = current.description;
+  presentationModal.showModal();
 }
 
+// Функция для обновления списка презентаций
 async function updatePresentions(search = "") {
-  const response = await fetch("/presentations");
-  if (response.ok) {
-    const TABLE = document.getElementById("presentations-table");
-    const STATS = document.getElementById("found-result");
-    const json = await response.json();
-    let resultCount = 0;
+  let resultCount = 0;
 
-    let resultHTML = "";
-    json.forEach((value) => {
-      const row = `
+  let resultHTML = "";
+  presentations.forEach((value) => {
+    const row = `
       <tr class="clickable-row" onclick="showModal(${value.id})">
       <th scope="row">
       <span class="format-icon">
@@ -166,39 +183,30 @@ async function updatePresentions(search = "") {
       </tr>
       `;
 
-      if (
-        search === "" ||
-        value.title.toLowerCase().includes(search.toLowerCase()) ||
-        value.authors.toLowerCase().includes(search.toLowerCase()) ||
-        value.description.toLowerCase().includes(search.toLowerCase())
-      ) {
-        resultHTML += row;
-        resultCount += 1;
-      }
-    });
-
-    if (resultCount === 0) {
-      document.getElementById("table-wrapper").hidden = true;
-      STATS.innerText = "Ничего не найдено";
-    } else if (resultCount === json.length) {
-      document.getElementById("table-wrapper").hidden = false;
-      STATS.innerText = `Всего ${resultCount} презентаций`;
-    } else {
-      document.getElementById("table-wrapper").hidden = false;
-      STATS.innerText = `Найдено ${resultCount} презентаций`;
+    if (
+      search === "" ||
+      value.title.toLowerCase().includes(search.toLowerCase()) ||
+      value.authors.toLowerCase().includes(search.toLowerCase()) ||
+      value.description.toLowerCase().includes(search.toLowerCase())
+    ) {
+      resultHTML += row;
+      resultCount += 1;
     }
+  });
 
-    TABLE.innerHTML = resultHTML;
+  if (resultCount === 0) {
+    document.getElementById("table-wrapper").hidden = true;
+    search_stats.innerText = "Ничего не найдено";
+  } else if (resultCount === presentations.length) {
+    document.getElementById("table-wrapper").hidden = false;
+    search_stats.innerText = `Всего ${resultCount} презентаций`;
+  } else {
+    document.getElementById("table-wrapper").hidden = false;
+    search_stats.innerText = `Найдено ${resultCount} презентаций`;
   }
+
+  table.innerHTML = resultHTML;
 }
-
-updatePresentions();
-
-document.getElementById("searchbar").oninput = (e) => {
-  console.log("s");
-  const SEARCH = document.getElementById("searchbar").value;
-  updatePresentions(SEARCH);
-};
 
 // $("#achievements-btn").click(function (e) {
 //   e.preventDefault();
