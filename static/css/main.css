@@ -111,15 +111,23 @@ img {
 
 /* Кнопка логина */
 .login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   aspect-ratio: 1;
   height: 100%;
-  border-radius: 0px !important;
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: var(--transition-color);
 }
 
 .login-btn > .icon {
   width: 100%;
-  height: 90%;
-  background: var(--color-accent);
+  height: 70%;
 }
 
 .login-btn:hover {
@@ -520,6 +528,22 @@ tbody tr:last-child > th {
   background: var(--color-accent);
   color: var(--color-text-inverse);
   font-size: 10px;
+}
+
+.format-icon.pdf {
+  background: #c11007;
+}
+
+.format-icon.html {
+  background: #e1712b;
+}
+
+.format-icon.odp {
+  background: #36bba7;
+}
+
+.format-icon.pptx {
+  background: #ffdf20;
 }
 
 /* Адаптивность */
