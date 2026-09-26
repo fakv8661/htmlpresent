@@ -21,6 +21,8 @@
   --color-text-secondary: #364153;
   --color-text-inverse: #f9fafb;
 
+  --color-error: #b40023;
+
   /* Размеры */
   --size-xxs: 4px;
   --size-xs: 8px;
@@ -36,8 +38,9 @@
   --font-text: "Golos Text", sans-serif;
 
   /* Повторяющиеся стили компонентов */
-  --border-radius-xs: var(--size-xs);
-  --border-radius-s: var(--size-s);
+  --border-radius-xs: 8px;
+  --border-radius-s: 12px;
+  --border-radius-m: 24px;
   --transition-color: background 0.1s ease, border-color 0.1s ease;
 }
 
@@ -115,7 +118,7 @@ img {
 
 .login-btn > .icon {
   width: 100%;
-  height: 60%;
+  height: 90%;
 }
 /* #endregion */
 
@@ -124,20 +127,65 @@ img {
 .input {
   min-width: 0;
   padding: var(--size-xs);
-  border: solid 3px var(--color-primary-dark);
+  border: solid 3px var(--color-primary-darker);
   border-radius: var(--border-radius-xs);
   outline: none;
-  background: var(--color-background-dark);
+  background: var(--color-background);
   color: var(--color-text);
   transition: var(--transition-color);
 }
 
-.input::placeholder {
+.input::placeholder,
+.input input::placeholder {
   color: var(--color-text-secondary);
 }
 
+.input:focus-within,
 .input:focus {
   border-color: var(--color-accent);
+}
+
+.input input:not(:placeholder-shown):invalid,
+.input:not(:placeholder-shown):invalid {
+  border-color: var(--color-error);
+}
+
+.input:has(input) {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+}
+
+.input input {
+  width: 100%;
+  height: 100%;
+  padding: var(--size-xs);
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+}
+
+/* Ссылки */
+.link {
+  color: var(--color-accent);
+  text-decoration: underline 2px var(--color-accent);
+  transition:
+    color 0.1s ease,
+    text-decoration-color 0.1s ease;
+}
+
+.link:hover,
+.link:focus {
+  color: var(--color-accent-bright);
+  text-decoration-color: var(--color-accent-bright);
+}
+
+.link:active {
+  color: var(--color-accent-darker);
+  text-decoration-color: var(--color-accent-darker);
 }
 
 /* Кнопки */
@@ -145,6 +193,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--size-s);
   gap: var(--size-xs);
   border: none;
   border-radius: var(--border-radius-xs);
@@ -154,16 +203,60 @@ img {
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.1s ease;
+  transition:
+    background 0.1s ease,
+    transform 0.1s ease;
 }
 
 .button:hover {
-  background: var(--color-accent-dark);
+  transform: scale(1.02);
+  background: var(--color-accent-bright);
 }
 
 .button:active {
+  transform: scale(0.98);
   background: var(--color-accent-darker);
 }
+<<<<<<< Updated upstream
+=======
+
+.button:disabled {
+  background: var(--color-accent-brighter);
+  color: var(--color-text-secondary);
+}
+
+/* Невидимая кнопка */
+.flat-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  transition:
+    color 0.1s ease,
+    transform 0.1s ease;
+}
+
+.flat-button:hover {
+  transform: scale(1.1);
+  color: var(--color-accent-bright);
+}
+
+.flat-button:active {
+  transform: scale(0.9);
+  color: var(--color-accent-darker);
+}
+
+/* Панель */
+.panel {
+  padding: var(--size-m);
+  border: solid 3px var(--color-primary-darker);
+  border-radius: var(--border-radius-m);
+  background: var(--color-primary);
+}
+>>>>>>> Stashed changes
 
 /* Модальное окно */
 .modal {
@@ -381,7 +474,6 @@ tbody tr:last-child > th {
 
 .presentation-modal .actions .button {
   flex-grow: 1;
-  padding: var(--size-s);
 }
 
 .presentation-modal:open {
