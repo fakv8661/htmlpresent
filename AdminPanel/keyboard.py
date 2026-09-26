@@ -11,6 +11,12 @@ IMGPREVIEW_SELECTOR = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="[-] Отмена", callback_data="fsm_cancel")]
 ])
 
+PRESENTATION_LOCAL_MANAGE = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="[-] Скрыть/показать презентацию", callback_data="presentation_manage_hideshow")],
+    [InlineKeyboardButton(text="[=] Изменить параметр", callback_data="presentation_manage_change")],
+    [InlineKeyboardButton(text="[-] Удалить презентацию", callback_data="presentation_manage_delete")]
+])
+
 def GetMainKeyboard(high_admin: bool=False):
     if not high_admin:
         return ADMIN_KB

@@ -58,6 +58,20 @@ class PresentationDatabase():
             session.add(presentation)
             await session.commit()
 
+    @staticmethod
+    async def GetPresentationsByOwner(owner_id: int) -> list[models.Presentation]:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Presentation)
+                .where(models.Presentation.owner_id == owner_id)
+            )
+
+            cur = await session.execute(stmt)
+            rows = cur.scalars().all()
+
+            return rows
+
+
 class AdminPanel():
     @staticmethod
     async def AdminCheck(tg_id: int, high_level:bool=False) -> bool:
@@ -76,11 +90,11 @@ class AdminPanel():
             return row is not None
 
     @staticmethod
-    async def isHighAdmin(tg_id: int) -> bool:
+    async def isHighAdmin(admin_id: int) -> bool:
         async with session_factory() as session:
             stmt = (
                 select(models.Admin)
-                .where(models.Admin.telegram_id == tg_id, models.Admin.high_admin == True)
+                .where(models.Admin.id == admin_id, models.Admin.high_admin == True)
             )
 
             cur = await session.execute(stmt)
@@ -90,11 +104,11 @@ class AdminPanel():
             return row is not None
 
     @staticmethod
-    async def PresentationLimitCheck(tg_id: int, limit:int=3) -> bool:
+    async def PresentationLimitCheck(admin_id: int, limit:int=3) -> bool:
         async with session_factory() as session:
             stmt = (
                 select(models.Presentation.id)
-                .where(models.Presentation.owner_id == tg_id)
+                .where(models.Presentation.owner_id == admin_id)
             )
 
             cur = await session.execute(stmt)

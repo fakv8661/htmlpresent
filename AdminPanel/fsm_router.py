@@ -12,6 +12,7 @@ from AdminPanel import fsm
 from AdminPanel import keyboard
 from AdminPanel.bot_config import download_preview, download_document
 import path_config
+import utils
 
 router = Router(name="fsm_router")
 
@@ -66,7 +67,7 @@ async def presentationadd_null(callback: CallbackQuery, state: FSMContext):
 async def presentationadd_document(message: Message, state: FSMContext):
     document = message.document
 
-    filetype = document.file_name.rsplit(".", 1)[-1].lower() if "." in document.file_name else None
+    filetype = utils.get_filetype(document.file_name)
     if filetype is None:
         await message.answer("[!] Не удалось определить тип файла")
         return

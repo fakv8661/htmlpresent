@@ -11,19 +11,7 @@ import utils
 
 router = APIRouter(tags=['presentations'])
 
-@router.get("/presentation")
-async def prsentationpg(request: Request):
-    # LEGACY!!!
-    # убрать после рекода фронтенда
-    presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations(), request)
-    # вот это
-    return templates.TemplateResponse(
-        request,
-        "presentation_page.html",
-        context={"presentations": presentations},
-    )
-
-@router.get("/presentation/{present_id}")
+@router.get("/pres/{present_id}")
 async def presentationgt(present_id: int, request: Request):
     present = await database.PresentationDatabase.GetPresentationByID(present_id)
     if present is None:
@@ -41,7 +29,7 @@ async def presentationgt(present_id: int, request: Request):
     else:
         return RedirectResponse(url="/")
 
-@router.get("/presentations")
+@router.get("/pres")
 async def presentationlst(request: Request):
     presentations = utils.get_presentationlist(await database.PresentationDatabase.GetAllPresentations(), request)
 
