@@ -8,7 +8,7 @@ from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
 
 from templates_config import templates_present, templates
-from Routers import presentations
+from Routers import presentations, admin_web
 from Database import database
 import path_config
 from env_loading import ENV
@@ -46,6 +46,7 @@ app.mount("/presentation_asset", StaticFiles(directory="presentation_asset"), na
 
 # ----------------- Routers
 app.include_router(presentations.router)
+app.include_router(admin_web.router)
 # -----------------
 
 @app.get("/favicon.ico")

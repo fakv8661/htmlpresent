@@ -33,9 +33,14 @@
           >Сайт группы ПР-104</a
         >
       </h1>
-      <button type="button" class="button login-btn" id="login-btn">
+      <a
+        type="button"
+        class="button login-btn"
+        id="login-btn"
+        href="{{ url_for('admin_pg') }}"
+      >
         <i data-lucide="circle-user-round" class="icon"></i>
-      </button>
+      </a>
     </header>
     {% endblock header %}
 
