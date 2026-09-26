@@ -2,21 +2,24 @@
 
 :root {
   /* Цветовая палитра (светлая тема) */
-  --color-background: #f3f0ed;
-  --color-background-dark: #e1d9d1;
-  --color-background-darker: #cec2b6;
-  --color-background-shadow: #2b231c7f;
+  --color-background: #f9fafb;
+  --color-background-dark: #f3f4f6;
 
-  --color-primary: #193497;
-  --color-primary-dark: #102365;
-  --color-primary-darker: #0a153d;
+  --color-shadow: #1018282f;
 
-  --color-accent: #eda398;
-  --color-accent-dark: #e78474;
-  --color-accent-darker: #e0614d;
+  --color-primary: #f3f4f6;
+  --color-primary-dark: #e5e7eb;
+  --color-primary-darker: #d1d5dc;
 
-  --color-text: #282828;
-  --color-text-secondary: #696969;
+  --color-accent-brighter: #738ce8;
+  --color-accent-bright: #4b6ce2;
+  --color-accent: #193497;
+  --color-accent-dark: #102365;
+  --color-accent-darker: #0a153d;
+
+  --color-text: #1e2939;
+  --color-text-secondary: #364153;
+  --color-text-inverse: #f9fafb;
 
   /* Размеры */
   --size-xxs: 4px;
@@ -27,22 +30,385 @@
   --size-xl: 48px;
   --size-xxl: 64px;
 
+  --container-width: 1200px;
+
   /* Шрифты */
   --font-text: "Golos Text", sans-serif;
+
+  /* Повторяющиеся стили компонентов */
+  --border-radius-xs: var(--size-xs);
+  --border-radius-s: var(--size-s);
+  --transition-color: background 0.1s ease, border-color 0.1s ease;
+}
+
+/* #region Сброс стилей и глобальные стили */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body,
 html {
   width: 100%;
+  min-width: 375px;
   height: 100%;
-  box-sizing: border-box;
+  min-height: 667px;
   margin: 0;
 }
 
 body {
-  font-family: var(--font-text);
-  color: var(--color-text);
-  background: var(--color-background);
   display: flex;
   flex-direction: column;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-text);
+}
+
+img {
+  color: var(--color-text-secondary);
+}
+/* #endregion */
+
+/* #region Глобальные компоненты */
+/* Основной контейнер */
+.main-container {
+  flex-grow: 1;
+  align-self: center;
+  width: 100%;
+  max-width: var(--container-width);
+  padding: var(--size-s);
+}
+
+/* Шапка сайта */
+.header {
+  display: flex;
+  margin: var(--size-s);
+  overflow: hidden;
+  border-radius: var(--border-radius-xs);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  user-select: none;
+}
+
+/* Название сайта */
+.website-title {
+  flex-grow: 1;
+  margin: 0;
+  padding: var(--size-m);
+  font-weight: bolder;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+.website-title-link {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+/* Кнопка логина */
+.login-btn {
+  aspect-ratio: 1;
+  height: 100%;
+  border-radius: 0px !important;
+}
+
+.login-btn > .icon {
+  width: 100%;
+  height: 60%;
+}
+/* #endregion */
+
+/* #region Базовые компоненты */
+/* Поля ввода */
+.input {
+  min-width: 0;
+  padding: var(--size-xs);
+  border: solid 3px var(--color-primary-dark);
+  border-radius: var(--border-radius-xs);
+  outline: none;
+  background: var(--color-background-dark);
+  color: var(--color-text);
+  transition: var(--transition-color);
+}
+
+.input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.input:focus {
+  border-color: var(--color-accent);
+}
+
+/* Кнопки */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-xs);
+  border: none;
+  border-radius: var(--border-radius-xs);
+  outline: none;
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.button:hover {
+  background: var(--color-accent-dark);
+}
+
+.button:active {
+  background: var(--color-accent-darker);
+}
+
+/* Модальное окно */
+.modal {
+  border: none;
+  border-radius: var(--border-radius-s);
+  outline: none;
+  box-shadow: 0 6px 16px 2px var(--color-shadow);
+  animation: modal-open 0.2s ease-out;
+}
+
+@keyframes modal-open {
+  from {
+    transform: translate(0, 20px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+.modal::backdrop {
+  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Заголовок секции */
+.section-header {
+  margin: var(--size-m) 0;
+  color: var(--color-accent);
+  font-size: 1.8rem;
+}
+/* #endregion */
+
+/* #region Таблица */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: solid 3px var(--color-primary-darker);
+  border-radius: var(--border-radius-s);
+  background: var(--color-primary);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Ячейки */
+th,
+td {
+  padding: var(--size-s);
+  border-bottom: solid 3px var(--color-primary-darker);
+  text-align: start;
+  white-space: nowrap;
+}
+
+/* Колонки */
+.th-title {
+  width: 40%;
+}
+
+.th-author {
+  width: 20%;
+}
+
+.th-category {
+  width: 20%;
+}
+
+.th-date {
+  width: 20%;
+}
+
+/* Заголовки */
+thead th {
+  color: var(--color-text-secondary);
+  text-align: start;
+}
+
+tbody tr:last-child > td,
+tbody tr:last-child > th {
+  border-bottom: none;
+}
+
+/* Кликабельная строка */
+.clickable-row {
+  background: var(--color-primary);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.clickable-row:hover {
+  background: var(--color-primary-dark);
+}
+
+.clickable-row:active {
+  background: var(--color-primary-darker);
+}
+/* #endregion */
+
+/* #region Главная страница */
+/* Статистика результатов */
+.result-stats {
+  margin: var(--size-s) 0;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+}
+
+/* Поисковая строка */
+.searchbar .icon {
+  color: var(--color-text-secondary);
+}
+
+/* Описание секции */
+.section-description {
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* Поиск презентаций */
+.presentations-search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-top: var(--size-l);
+  gap: var(--size-xxs);
+}
+
+.presentations-search .searchbar {
+  flex-grow: 1;
+}
+
+.searchbar input {
+  flex-grow: 1;
+  height: 100%;
+  font-size: 1rem;
+}
+
+/* #region Модальное окно презентации */
+.presentation-modal {
+  width: max(400px, 10%);
+  height: max(500px, 10%);
+  padding: 0;
+  overflow: hidden;
+}
+
+.presentation-modal::backdrop {
+  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.presentation-modal .preview {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+  overflow: hidden;
+}
+
+.presentation-modal .preview > .vignette {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(#ffffff00 70%, #ffffffff 99%);
+}
+
+.presentation-modal .info {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: var(--size-m);
+  overflow-y: auto;
+}
+
+.presentation-modal .info .authors {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin: var(--size-s) 0;
+  gap: var(--size-xxs);
+  color: var(--color-text);
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.presentation-modal .info .authors .icon {
+  width: 1rlh;
+  height: 1rlh;
+}
+
+.presentation-modal .info .title {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.4rem;
+}
+
+.presentation-modal .info .description {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  line-height: 1lh;
+}
+
+.presentation-modal .actions {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: var(--size-xs);
+  gap: var(--size-xs);
+}
+
+.presentation-modal .actions .button {
+  flex-grow: 1;
+  padding: var(--size-s);
+}
+
+.presentation-modal:open {
+  display: flex;
+  flex-direction: column;
+}
+/* #endregion */
+/* #endregion */
+
+/* Иконка формата */
+.format-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-right: var(--size-s);
+  padding: var(--size-xxs);
+  border-radius: var(--border-radius-xs);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-size: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+  .website-title {
+    font-size: 1.4rem;
+  }
 }

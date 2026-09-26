@@ -7,8 +7,61 @@
 
 <!-- Разметка -->
 {% block body %}
-<main class="main">
-  <button type="button" id="presentations-btn">Презентации</button>
-  <button type="button" id="achievements-btn">Достижения</button>
+
+<dialog id="presentation-modal" class="presentation-modal modal">
+  <div class="preview">
+    <img src="" id="modal-preview" alt="Нет предпросмотра" />
+    <div class="vignette"></div>
+  </div>
+  <div class="info">
+    <h3 class="title" id="modal-title"></h3>
+    <p class="authors">
+      <i data-lucide="user" class="icon"></i><span id="modal-authors"></span>
+    </p>
+    <p class="description" id="modal-description"></p>
+  </div>
+  <div class="actions">
+    <a type="button" class="button" id="presentation-view" target="_blank">
+      <i data-lucide="presentation"></i>
+      Смотреть
+    </a>
+    <button type="button" class="button" id="presentation-download">
+      <i data-lucide="download"></i>
+      Скачать
+    </button>
+  </div>
+</dialog>
+
+<main class="main-container">
+  <h2 class="section-header">Презентации</h2>
+  <p class="section-description">
+    Здесь хранятся все наши презентации.<br />Можно скачать или посмотреть на
+    сайте.
+  </p>
+  <div class="presentations-search">
+    <i data-lucide="search" class="icon"></i>
+    <input
+      type="search"
+      id="searchbar"
+      class="searchbar input"
+      placeholder="Поиск"
+    />
+  </div>
+  <div class="result-stats" id="found-result"></div>
+  <div class="table-wrapper" id="table-wrapper">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="th-title" scope="col">Название</th>
+          <th class="th-author" scope="col">Автор(ы)</th>
+          <!-- <th class="th-category" scope="col">Категория</th>
+          -->
+          <!-- <th class="th-date" scope="col">Дата создания</th>
+          -->
+        </tr>
+      </thead>
+      <tbody id="presentations-table"></tbody>
+    </table>
+  </div>
 </main>
 {% endblock %}

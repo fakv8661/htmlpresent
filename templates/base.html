@@ -29,8 +29,13 @@
     {% block header %}
     <header class="header">
       <h1 class="website-title">
-        <a href="{{ url_for('mainpg') }}">Сайт группы ПР-104</a>
+        <a class="website-title-link" href="{{ url_for('mainpg') }}"
+          >Сайт группы ПР-104</a
+        >
       </h1>
+      <button type="button" class="button login-btn" id="login-btn">
+        <i data-lucide="circle-user-round" class="icon"></i>
+      </button>
     </header>
     {% endblock header %}
 
@@ -38,7 +43,10 @@
     {% block body %} {% endblock body %}
 
     <!-- Скрипты -->
-    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
     {% block script %} {% endblock script %}
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons(); // Иконки
+    </script>
   </body>
 </html>
