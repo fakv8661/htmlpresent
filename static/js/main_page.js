@@ -180,7 +180,7 @@ async function updatePresentions(search = "") {
   presentations.forEach((value) => {
     const row = `
       <tr class="clickable-row" onclick="showModal(${value.id})">
-      <th scope="row">
+      <th scope="row" class="th-title">
       <span class="format-icon">
       HTML
       </span>
