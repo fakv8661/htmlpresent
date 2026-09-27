@@ -531,6 +531,79 @@ tbody tr:last-child > th {
 }
 /* #endregion */
 
+/* #region Админ-панель */
+.login-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-info-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: var(--size-l);
+}
+
+.login-info-user {
+  margin: 0 0 var(--size-m) 0;
+  padding-bottom: var(--size-m);
+  border-bottom: solid 3px var(--color-primary-darker);
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.login-info-user strong {
+  color: var(--color-accent-bright);
+  font-weight: bold;
+}
+
+.login-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-xs);
+}
+
+.login-info-item {
+  margin: 0;
+  color: var(--color-accent);
+  font-weight: bolder;
+  font-size: 1rem;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--size-s);
+}
+
+.admin-nav-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--size-s);
+  gap: var(--size-xs);
+  border-radius: var(--border-radius-xs);
+  background: var(--color-accent-brighter);
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-color);
+}
+
+.admin-nav-button:hover {
+  background: var(--color-accent-bright);
+}
+
+.admin-nav-button:active {
+  background: var(--color-accent);
+}
+
+.admin-nav-button > p {
+  flex-grow: 1;
+  margin: 0;
+}
+/* #endregion */
+
 /* Иконка формата */
 .format-icon {
   display: inline-flex;
@@ -550,5 +623,9 @@ tbody tr:last-child > th {
 @media (max-width: 600px) {
   .website-title {
     font-size: 1.4rem;
+  }
+
+  .login-info-wrapper {
+    justify-content: space-around;
   }
 }

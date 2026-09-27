@@ -6,4 +6,56 @@
 {% endblock %}
 
 <!-- Разметка -->
-{% block body %} Админ-панель {% endblock %}
+{% block body %}
+<main class="main-container">
+  <div class="login-info panel">
+    <p class="login-info-user">
+      Вы вошли как <strong id="user-login">{{ login }}</strong>
+    </p>
+    <div class="login-info-wrapper">
+      <div class="login-info-section">
+        <p class="login-info-item">Уровень доступа</p>
+        <span class="login-info-data" id="user-role">
+          {% if high_admin %} Администратор {% else %} Пользователь {% endif %}
+        </span>
+      </div>
+      <div class="login-info-section">
+        <p class="login-info-item">ТГ-бот</p>
+        <span class="login-info-data" id="user-bot-status">
+          {% if bot_connected %} Подключен {% else %} Не подключен {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+  <h2 class="section-header">Панель управления</h2>
+  {% if high_admin %}
+  <p class="section-description">
+    Здесь вы можете редактировать базу данных пользователей, <br />
+    презентаций и категорий
+  </p>
+  {% else %}
+  <p class="section-description">
+    Здесь вы можете управлять вашими презентациями
+  </p>
+  {% endif %}
+  <nav class="admin-nav">
+    <a href="" class="admin-nav-button">
+      <i data-lucide="folder-open"></i>
+      <p>Презентации</p>
+      <i data-lucide="chevron-right"></i>
+    </a>
+    {% if high_admin %}
+    <a href="" class="admin-nav-button">
+      <i data-lucide="user-round-group"></i>
+      <p>Пользователи</p>
+      <i data-lucide="chevron-right"></i>
+    </a>
+    <a href="" class="admin-nav-button">
+      <i data-lucide="tags"></i>
+      <p>Категории</p>
+      <i data-lucide="chevron-right"></i>
+    </a>
+    {% endif %}
+  </nav>
+</main>
+{% endblock %}

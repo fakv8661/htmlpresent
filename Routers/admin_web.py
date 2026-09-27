@@ -23,4 +23,5 @@ async def admin_pg(request: Request):
     return templates.TemplateResponse(
         request,
         "admin/admin_main.html",
+        context={'high_admin': True, 'login': 'IvanIvanov', 'bot_connected': False}
     )
