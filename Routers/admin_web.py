@@ -25,3 +25,24 @@ async def admin_pg(request: Request):
         "admin/admin_main.html",
         context={'high_admin': True, 'login': 'IvanIvanov', 'bot_connected': False}
     )
+
+@router.get("/admin/pres")
+async def admin_pres_pg(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "admin/admin_presentations.html",
+    )
+
+@router.get("/admin/users")
+async def admin_users_pg(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "admin/admin_users.html",
+    )
+
+@router.get("/admin/categories")
+async def admin_categories_pg(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "admin/admin_categories.html",
+    )
