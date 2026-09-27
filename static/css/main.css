@@ -229,6 +229,7 @@ img {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: var(--size-xxs);
   border: none;
   background: transparent;
   color: var(--color-text);
@@ -327,6 +328,10 @@ td {
 
 .th-date {
   width: 20%;
+}
+
+.th-actions {
+  width: 10%;
 }
 
 /* Заголовки */
@@ -619,6 +624,23 @@ tbody tr:last-child > th {
 
 .logout-btn:active {
   background: oklch(from var(--color-error) calc(l - 0.25) c h);
+}
+
+.return-btn {
+  flex-shrink: 1;
+  width: fit-content;
+  text-decoration: none;
+}
+
+.limits {
+  color: var(--color-accent);
+}
+
+.upload-region {
+  display: flex;
+  align-items: center;
+  margin: var(--size-l) 0 0;
+  gap: var(--size-m);
 }
 /* #endregion */
 
