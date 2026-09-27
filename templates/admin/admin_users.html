@@ -7,6 +7,63 @@
 
 <!-- Разметка -->
 {% block body %}
+<dialog id="adding-modal" class="adding-modal modal">
+  <form
+    id="adding-form"
+    action=""
+    method=""
+    class="modal-form"
+    onsubmit="
+      addUser();
+      return false;
+    "
+  >
+    <h2 class="section-header">Новый аккаунт</h2>
+    <label for="username-input">Введите имя пользователя:</label>
+    <input
+      class="input"
+      type="text"
+      name="name"
+      id="username-input"
+      maxlength="16"
+      minlength="5"
+      placeholder="Иван Иванов"
+      required
+    />
+    <div class="panel adding-response hidden" id="adding-response">
+      <p class="adding-response-header">
+        <i data-lucide="check"></i>Пользователь добавлен
+      </p>
+      <p class="adding-response-entry">
+        Логин: <code class="code">IvanIvanov</code>
+      </p>
+      <p class="adding-response-entry">
+        Пароль: <code class="code">q1w2e3r4t5</code>
+      </p>
+      <p class="adding-response-warning">
+        <i data-lucide="triangle-alert"></i>
+        Не забудьте скопировать пароль: после закрытия окна он больше нигде не
+        отобразится
+      </p>
+    </div>
+  </form>
+  <div class="actions" id="modal-actions">
+    <button
+      id="back-btn"
+      type="button"
+      class="button secondary"
+      onclick="closeModal()"
+    >
+      <i data-lucide="arrow-left"></i>
+      Назад
+    </button>
+    <button id="submit-btn" type="submit" form="adding-form" class="button">
+      <i data-lucide="plus"></i>
+      Далее
+    </button>
+  </div>
+</dialog>
+
 <main class="main-container">
   <a href="{{ url_for('admin_pg') }}" class="return-btn flat-button">
     <i data-lucide="chevron-left"></i>
@@ -19,7 +76,7 @@
   </p>
 
   <div class="upload-region">
-    <button type="button" class="button">
+    <button type="button" class="button" onclick="showModal()">
       <i data-lucide="user-round-plus"></i>
       Зарегистрировать
     </button>
