@@ -6,4 +6,42 @@
 {% endblock %}
 
 <!-- Разметка -->
-{% block body %} {% endblock %}
+{% block body %}
+<main class="main-container">
+  <a href="{{ url_for('admin_pg') }}" class="return-btn flat-button">
+    <i data-lucide="chevron-left"></i>
+    На главную
+  </a>
+  <h2 class="section-header">Управление категориями</h2>
+  <p class="section-description">
+    Здесь можно добавлять или удалять категории презентаций.
+  </p>
+
+  <form class="upload-region">
+    <input
+      type="text"
+      name="category"
+      id="category-input"
+      class="input"
+      placeholder="Название категории"
+    />
+    <button type="submit" class="button">
+      <i data-lucide="tag-plus"></i>
+      Добавить
+    </button>
+  </form>
+
+  <div class="table-wrapper" id="table-wrapper">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="th-login" scope="col">Логин</th>
+          <th scope="col">Уровень доступа</th>
+          <th class="th-actions" scope="col">Действия</th>
+        </tr>
+      </thead>
+      <tbody id="presentations-table"></tbody>
+    </table>
+  </div>
+</main>
+{% endblock %}

@@ -334,6 +334,10 @@ td {
   width: 10%;
 }
 
+.th-login {
+  width: 50%;
+}
+
 /* Заголовки */
 thead th {
   color: var(--color-text-secondary);
@@ -633,14 +637,15 @@ tbody tr:last-child > th {
 }
 
 .limits {
+  align-self: center;
   color: var(--color-accent);
 }
 
 .upload-region {
   display: flex;
-  align-items: center;
-  margin: var(--size-l) 0 0;
-  gap: var(--size-m);
+  align-items: stretch;
+  margin: var(--size-l) 0 var(--size-m);
+  gap: var(--size-s);
 }
 /* #endregion */
 
