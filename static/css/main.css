@@ -123,6 +123,14 @@ img {
   height: 90%;
 }
 
+.login-btn:hover {
+  background: var(--color-accent-dark);
+}
+
+.login-btn:active {
+  background: var(--color-accent-darker);
+}
+
 .hidden {
   display: none !important;
 }
@@ -182,9 +190,6 @@ img {
   color: var(--color-text-secondary) !important;
   caret-color: transparent;
   cursor: default;
-}
-
-.file-input {
 }
 
 /* Ссылки */
