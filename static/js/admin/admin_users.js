@@ -10,6 +10,7 @@ function showModal() {
 function closeModal() {
   if (!modal_lock) {
     MODAL.close();
+    document.getElementById("adding-form").reset();
     document.getElementById("adding-response").classList.add("hidden");
     document.getElementById("submit-btn").classList.remove("hidden");
     document.getElementById("username-input").value = "";
@@ -32,18 +33,3 @@ function addUser() {
     modal_lock = false;
   }, 3000);
 }
-
-MODAL.addEventListener("click", (e) => {
-  if (MODAL.open && !modal_lock) {
-    const rect = MODAL.getBoundingClientRect();
-    const outside =
-      e.clientX < rect.left ||
-      e.clientX > rect.right ||
-      e.clientY < rect.top ||
-      e.clientY > rect.bottom;
-
-    if (outside) {
-      closeModal();
-    }
-  }
-});

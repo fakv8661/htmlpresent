@@ -138,6 +138,7 @@ img {
   outline: none;
   background: var(--color-background);
   color: var(--color-text);
+  resize: none;
   transition: var(--transition-color);
 }
 
@@ -181,6 +182,9 @@ img {
   color: var(--color-text-secondary) !important;
   caret-color: transparent;
   cursor: default;
+}
+
+.file-input {
 }
 
 /* Ссылки */
@@ -683,7 +687,7 @@ tbody tr:last-child > th {
 
 .upload-region {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   margin: var(--size-l) 0 var(--size-m);
   gap: var(--size-s);
 }

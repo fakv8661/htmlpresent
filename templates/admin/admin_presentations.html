@@ -7,6 +7,98 @@
 
 <!-- Разметка -->
 {% block body %}
+<dialog id="adding-modal" class="adding-modal modal">
+  <form id="adding-form" class="modal-form">
+    <h2 class="section-header">Новая презентация</h2>
+    <label for="name-input">Назание презентации:</label>
+    <input
+      class="input"
+      placeholder="Новая презентация"
+      type="text"
+      name="name"
+      id="name-input"
+      minlength="4"
+      maxlength="256"
+      required
+      autofocus
+      autocorrect="on"
+    />
+    <label for="author-input">Авторы:</label>
+    <input
+      class="input"
+      placeholder="Иванов И.И."
+      type="text"
+      name="author"
+      id="author-input"
+      minlength="4"
+      maxlength="256"
+      required
+      autocapitalize="words"
+      autocorrect="off"
+      spellcheck="false"
+    />
+    <label for="description-input">Описание презентации:</label>
+    <textarea
+      class="input"
+      placeholder="Описание презентации (до 500 символов)"
+      name="description"
+      id="description-input"
+      rows="6"
+      maxlength="500"
+      autocorrect="on"
+    ></textarea>
+
+    <label for="">Файл презентации:</label>
+    <label class="secondary button" for="pres-file-input">
+      <i data-lucide="paperclip"></i>
+      <span class="filename">Прикрепить файл</span>
+    </label>
+    <input
+      class="hidden"
+      type="file"
+      name="file"
+      id="pres-file-input"
+      required
+    />
+
+    <label for="">Файл заставки:</label>
+    <label class="secondary button" for="preview-file-input">
+      <i data-lucide="paperclip"></i>
+      <span class="filename">Прикрепить файл</span>
+    </label>
+    <input
+      class="hidden"
+      type="file"
+      name="preview"
+      id="preview-file-input"
+      accept="image/*"
+    />
+
+    <label for="">Дополнительные файлы:</label>
+    <label class="secondary button" for="assets-file-input">
+      <i data-lucide="paperclip"></i>
+      <span class="filename">Прикрепить файлы</span>
+    </label>
+    <input
+      class="hidden"
+      type="file"
+      name="assets"
+      id="assets-file-input"
+      multiple
+    />
+  </form>
+  <div class="actions">
+    <button class="secondary button" type="button" onclick="closeModal()">
+      <i data-lucide="x"></i>
+      Отмена
+    </button>
+    <button class="button" type="submit" form="adding-form">
+      <i data-lucide="upload"></i>
+      Добавить
+    </button>
+  </div>
+</dialog>
+
 <main class="main-container">
   <a href="{{ url_for('admin_pg') }}" class="return-btn flat-button">
     <i data-lucide="chevron-left"></i>
@@ -18,7 +110,7 @@
   </p>
 
   <div class="upload-region">
-    <button type="button" class="button">
+    <button type="button" class="button" onclick="showModal()">
       <i data-lucide="upload"></i>
       Добавить
     </button>
