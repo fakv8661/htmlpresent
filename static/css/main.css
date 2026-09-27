@@ -545,11 +545,17 @@ tbody tr:last-child > th {
 }
 
 .login-info-user {
+  display: flex;
+  align-items: center;
   margin: 0 0 var(--size-m) 0;
   padding-bottom: var(--size-m);
   border-bottom: solid 3px var(--color-primary-darker);
   font-weight: bold;
   font-size: 1.4rem;
+}
+
+.login-info-user span {
+  flex-grow: 1;
 }
 
 .login-info-user strong {
@@ -601,6 +607,18 @@ tbody tr:last-child > th {
 .admin-nav-button > p {
   flex-grow: 1;
   margin: 0;
+}
+
+.logout-btn {
+  background: var(--color-error);
+}
+
+.logout-btn:hover {
+  background: oklch(from var(--color-error) calc(l - 0.15) c h);
+}
+
+.logout-btn:active {
+  background: oklch(from var(--color-error) calc(l - 0.25) c h);
 }
 /* #endregion */
 

@@ -9,9 +9,12 @@
 {% block body %}
 <main class="main-container">
   <div class="login-info panel">
-    <p class="login-info-user">
-      Вы вошли как <strong id="user-login">{{ login }}</strong>
-    </p>
+    <div class="login-info-user">
+      <span>Вы вошли как <strong id="user-login">{{ login }}</strong></span>
+      <button type="button" class="button logout-btn" title="Выйти из аккаунта">
+        <i data-lucide="log-out"></i>
+      </button>
+    </div>
     <div class="login-info-wrapper">
       <div class="login-info-section">
         <p class="login-info-item">Уровень доступа</p>
