@@ -5,6 +5,7 @@ from aiogram import Router, F, html
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import invert_f
+from pydantic import ValidationError
 
 from Database.database import AdminPanel, PresentationDatabase
 from AdminPanel import filter as tgfil
@@ -13,6 +14,8 @@ from AdminPanel import keyboard
 from AdminPanel.bot_config import download_preview, download_document
 import path_config
 import utils
+from AdminPanel import validation as valid
+import keygen
 
 router = Router(name="fsm_router")
 
@@ -24,19 +27,19 @@ async def fsm_cancel(callback: CallbackQuery, state: FSMContext):
 # ------------------------------------------------
 
 #----------------- PRESENTATION ADD---------------------
-@router.message(fsm.PresentationAdd.name, tgfil.FMessageLen(256))
+@router.message(fsm.PresentationAdd.name)
 async def presentationadd_name(message: Message, state: FSMContext):
     await message.answer("[+] Отправьте авторов презентации (Формата: ФИО, ФИО, ФИО)")
     await state.update_data(name=message.text)
     await state.set_state(fsm.PresentationAdd.author)
 
-@router.message(fsm.PresentationAdd.author, tgfil.FMessageLen(256))
+@router.message(fsm.PresentationAdd.author)
 async def presentationadd_author(message: Message, state: FSMContext):
     await message.answer("[+] Отправьте описание, не более 500 символов")
     await state.update_data(author=message.text)
     await state.set_state(fsm.PresentationAdd.description)
 
-@router.message(fsm.PresentationAdd.description, tgfil.FMessageLen(500))
+@router.message(fsm.PresentationAdd.description)
 async def presentationadd_description(message: Message, state: FSMContext):
     await message.answer("[+] Отправьте превью презентации (Отправлять только в виде изображения!!!)",
                          reply_markup=keyboard.IMGPREVIEW_SELECTOR)
@@ -73,6 +76,7 @@ async def presentationadd_document(message: Message, state: FSMContext):
         return
     timenow = time.time()
     filename = f"{message.from_user.id}_{round(timenow)}.{filetype}"
+    await state.update_data(file=filename)
     await download_document(filename, document)
     await message.answer("[%] Проверка верной загрузки файлов...")
 
@@ -83,20 +87,26 @@ async def presentationadd_document(message: Message, state: FSMContext):
                 await message.answer("[!] Файлы не были верно загружены. Попробуйте снова!")
                 await state.clear()
                 return
+    data = await state.get_data()
+    try:
+        padd_schema = valid.PresentationAddSchema.model_validate(data)
+    except ValidationError:
+        await message.answer("[!] Валидация отправленных данных не прошла")
+        await state.clear()
+        return
 
     admin_id = await AdminPanel.GetAdminIDByTg(message.from_user.id)
-
     if admin_id is None:
         await message.answer("[!] Admin ID утерян. Попробуйте снова!")
         await state.clear()
         return
     
     await PresentationDatabase.CreatePresentation(
-        await state.get_value("name"),
-        await state.get_value("author"),
-        await state.get_value("description"),
-        filename,
-        img_preview,
+        padd_schema.name,
+        padd_schema.author,
+        padd_schema.description,
+        str(padd_schema.file),
+        padd_schema.image if padd_schema.image is None else str(padd_schema.image),
         admin_id
     )
 
@@ -106,21 +116,10 @@ async def presentationadd_document(message: Message, state: FSMContext):
 #------------------------------------------
 
 #--------------PRESENTATION HIDE-------------
-@router.message(fsm.PresentationHide.id)
+@router.message(fsm.PresentationHide.id, tgfil.FPOwnCheck())
 async def presentationhide_id(message: Message, state: FSMContext):
-    admin_id = await AdminPanel.GetAdminIDByTg(message.from_user.id)
-    if not message.text.isnumeric():
-        await message.answer("[!] Это не ID")
-        await state.clear()
-        return
-    
     presentation_id = int(message.text)
     presentation = await PresentationDatabase.GetPresentationByID(presentation_id, True)
-
-    if presentation.owner_id != admin_id:
-        await message.answer("[!] Это не ваша презентация")
-        await state.clear()
-        return
 
     await state.update_data(id=presentation_id)
     await message.answer(f"[~] Выберите действие\nПрезентация: {html.bold("Скрыта" if presentation.hidden else "Доступна")}",
@@ -128,11 +127,11 @@ async def presentationhide_id(message: Message, state: FSMContext):
                          reply_markup=keyboard.GetShowHidePresentationKb(presentation.hidden))
 
 
-@router.callback_query(F.data.in_({'presentation_manage_show', 'presentation_manage_hide'}), fsm.PresentationHide.id)
-async def presentationmanage(callback: CallbackQuery, state: FSMContext):
+@router.callback_query(F.data.in_({'presentation_manage_show', 'presentation_manage_hide'}), 
+                       fsm.PresentationHide.id, tgfil.FPOwnCheck())
+async def presentationmanage_hide(callback: CallbackQuery, state: FSMContext):
     message = callback.message
 
-    admin_id = await AdminPanel.GetAdminIDByTg(callback.from_user.id)
     presentation_id = await state.get_value("id")
     
     if presentation_id is None:
@@ -147,18 +146,127 @@ async def presentationmanage(callback: CallbackQuery, state: FSMContext):
         await message.answer("[!] Презентация не найдена")
         return
 
-    if presentation.owner_id != admin_id:
-        print(presentation.owner_id, "  ", admin_id)
-        await message.answer("[!] Это не ваша презентация")
-        await state.clear()
-        return
-
     await message.answer(f"[~] Выберите действие\nПрезентация: {html.bold("Скрыта" if not presentation.hidden else "Доступна")}",
                             parse_mode='HTML',
                             reply_markup=keyboard.GetShowHidePresentationKb(not presentation.hidden))
 
 
     await PresentationDatabase.HidePresentation(presentation_id, not presentation.hidden)
+
+#----------------------------------------
+
+#--------------------------------- PRESENTATION DELETE 
+@router.message(fsm.PresentationDelete.id,
+                tgfil.FPOwnCheck())
+async def presentation_manage_delete_id(message: Message, state: FSMContext):
+    presentation_id = int(message.text)
+    presentation = await PresentationDatabase.GetPresentationByID(presentation_id, True)
+
+    if presentation is None:
+        await state.clear()
+        await message.answer("[!] Презентация не найдена")
+
+    await PresentationDatabase.DeletePresentation(presentation_id)
+    await message.answer("[-] Презентация удалена")
+# ------------------------------------------------
+
+#--------------------------------ADMIN GET
+
+@router.message(fsm.AdminGet.tg_id, tgfil.FNumeric())
+async def manage_admins_get_tg_fsm(message: Message, state: FSMContext):
+
+    admin = await AdminPanel.GetAdminIDByTg(int(message.text))
+
+    if admin is not None:
+        await message.answer(f"[?] Получен ID: {html.italic(admin)}", parse_mode='HTML')
+    else:
+        await message.answer("[?] Пользователь не найден")
+
+    await state.clear()
+
+@router.message(fsm.AdminGet.login)
+async def manage_admins_get_tg_fsm(message: Message, state: FSMContext):
+    admin = await AdminPanel.GetAdminIDByLogin(message.text)
+
+    if admin is not None:
+        await message.answer(f"[?] Получен ID: {html.italic(admin)}", parse_mode='HTML')
+    else:
+        await message.answer("[?] Пользователь не найден")
+
+    await state.clear()
+
+#------------------------------------
+
+#------------------------ADMIN DEL
+@router.message(fsm.AdminDel.id, tgfil.FNumeric())
+async def manage_admins_del_fsm(message: Message, state: FSMContext):
+    if AdminPanel.isHighAdmin(int(message.text)):
+        await message.answer("[!] Снять выс. админа нельзя")
+        await state.clear()
+        return
+    await AdminPanel.DeleteAdmin(int(message.text))
+    await message.answer("[-] Запрос на удаление отправлен")
+    await state.clear()
+#---------------------------------
+
+#----------------------ADMIN NEW
+@router.message(fsm.AdminNew.login)
+async def manage_admins_add_pre_login(message: Message, state: FSMContext):
+    login = message.text
+
+    if not login:
+        await message.answer("[!] Сообщение пустое")
+        return
+
+    login = keygen.generate_login(login)
+    unique_login = keygen.unique_login(login)
+    logincheck = await AdminPanel.GetAdminIDByLogin(unique_login)
+
+    while logincheck:
+        unique_login = keygen.unique_login(login)
+        logincheck = await AdminPanel.GetAdminIDByLogin(unique_login)
+
+    await message.answer(f"[~] Логин сгенерирован\n{html.bold(unique_login)}", parse_mode='HTML')
+    await state.update_data(login=unique_login)
+    await message.answer("[+] Отправьте Telegram ID (если есть)", reply_markup=keyboard.ADMIN_MANAGE_LOGIN)
+    await state.set_state(fsm.AdminNew.telegram_id)
+
+@router.callback_query(F.data == "manage_admins_login_null", fsm.AdminNew.telegram_id)
+async def manage_admins_add_tgid_null(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("[+] Оставлено пустым")
+
+    login = await state.get_value("login")
+
+    if not login:
+        await callback.message.answer("[!] Логин утерян")
+        await state.clear()
+        return
+
+    password = keygen.generate_password()
+    password_hashed = utils.hash_password(password)
+
+    await AdminPanel.CreateAdmin(login, password_hashed)
+    await callback.message.answer(f"Пользователь создан!\nЛогин: {html.bold(login)}\nПароль: {html.spoiler(password)}",
+                                  parse_mode='HTML')
+    await state.clear()
+
+@router.message(fsm.AdminNew.telegram_id, tgfil.FNumeric())
+async def managae_admins_add_tgid(message: Message, state: FSMContext):
+    tg_id = int(message.text)
+
+    login = await state.get_value("login")
     
-    
-    
+    if not login:
+        await message.answer("[!] Логин утерян")
+        await state.clear()
+        return
+
+    password = keygen.generate_password()
+    password_hashed = utils.hash_password(password)
+
+    await AdminPanel.CreateAdmin(login, password_hashed, telegram_id=tg_id)
+    await message.answer(f"Пользователь создан!\nЛогин: {html.bold(login)}\nПароль: {html.spoiler(password)}",
+                         parse_mode='HTML')
+    await state.clear()
+
+#-----------------------------

@@ -18,6 +18,19 @@ PRESENTATION_LOCAL_MANAGE = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="[-] Удалить презентацию", callback_data="presentation_manage_delete")]
 ])
 
+ADMIN_MANAGE = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="[=] Все админы", callback_data="manage_admins_all")],
+    [InlineKeyboardButton(text="[+] Добавить админа", callback_data="manage_admins_add")],
+    [InlineKeyboardButton(text="[-] Удалить админа", callback_data="manage_admins_del")],
+    [InlineKeyboardButton(text="[?] Получить ID (TG ID)", callback_data="manage_admins_get_tg"),
+     InlineKeyboardButton(text="[?] Получить ID (LOGIN)", callback_data="manage_admins_get_login")]
+])
+
+ADMIN_MANAGE_LOGIN = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="[X] Оставить пустым", callback_data="manage_admins_login_null")],
+    [InlineKeyboardButton(text="[-] Выйти", callback_data="fsm_cancel")]
+])
+
 def GetMainKeyboard(high_admin: bool=False) -> InlineKeyboardMarkup:
     if not high_admin:
         return deepcopy(ADMIN_KB)

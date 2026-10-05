@@ -13,12 +13,7 @@ from Database import database
 import path_config
 from env_loading import ENV
 
-is_bot_enabled = True
-try:
-    from AdminPanel import bot
-except Exception:
-    is_bot_enabled = False
-
+from AdminPanel import bot
 
 bot_task = None
 
@@ -27,14 +22,12 @@ async def lifespan(app: FastAPI):
     path_config.path_tests()
     
     await database.InitDatabase()
-    if is_bot_enabled:
-        bot_task = asyncio.create_task(bot.run_bot(), name="telegram_admin")
+    bot_task = asyncio.create_task(bot.run_bot(), name="telegram_admin")
 
     yield
 
     await database.engine.dispose()
-    if is_bot_enabled:
-        bot_task.cancel("Exit")
+    bot_task.cancel("Exit")
 
 
 app = FastAPI(debug=True, lifespan=lifespan)

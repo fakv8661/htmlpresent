@@ -2,6 +2,7 @@ import os
 
 from fastapi.requests import Request
 from aiogram import html
+import bcrypt
 
 from Database import models
 
@@ -23,7 +24,7 @@ def get_presentationlist(presentations: list[models.Presentation], request: Requ
     return presentationks
 
 def get_localpresentations_msg(first_name: str, presentations: list[models.Presentation]) -> str:
-    presentations_msg = f"{html.bold(first_name)}, Все ваши презентации\n"
+    presentations_msg = f"{html.bold(first_name)}, Все презентации\n"
 
     for present in presentations:
         msg = f"""[#] ID: {html.bold(present.id)}
@@ -35,4 +36,12 @@ def get_localpresentations_msg(first_name: str, presentations: list[models.Prese
         presentations_msg += msg + "\n"
 
     return presentations_msg
-    
+
+def hash_password(password: str) -> str:
+    password_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashpwd = bcrypt.hashpw(password_bytes, salt)
+    return hashpwd.decode('utf-8')
+
+def verify_password(password: str, hash: str) -> bool:
+    return bcrypt.checkpw(password.encode('utf-8'), hash.encode('utf-8'))    

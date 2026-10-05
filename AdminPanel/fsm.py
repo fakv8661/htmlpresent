@@ -9,3 +9,17 @@ class PresentationAdd(StatesGroup):
 
 class PresentationHide(StatesGroup):
     id = State()
+
+class PresentationDelete(StatesGroup):
+    id = State()
+
+class AdminGet(StatesGroup):
+    tg_id = State()
+    login = State()
+
+class AdminDel(StatesGroup):
+    id = State()
+
+class AdminNew(StatesGroup):
+    login = State()
+    telegram_id = State()

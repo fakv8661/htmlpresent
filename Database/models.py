@@ -7,10 +7,10 @@ class Base(DeclarativeBase):
 class Presentation(Base):
     __tablename__ = "presentation"
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    name: Mapped[str]
+    name: Mapped[str] = mapped_column(String(256))
     owner_id: Mapped[int | None] = mapped_column(ForeignKey("public.admin.id", ondelete='CASCADE'), default=None, nullable=True)
-    author: Mapped[str]
-    description: Mapped[str | None] = mapped_column(default=None)
+    author: Mapped[str] = mapped_column(String(256))
+    description: Mapped[str | None] = mapped_column(String(500), default=None)
     file: Mapped[str] = mapped_column(String(30))
     hidden: Mapped[bool] = mapped_column(default=False)
     preview_image: Mapped[str | None] = mapped_column(String(40), default=None)
@@ -18,5 +18,7 @@ class Presentation(Base):
 class Admin(Base):
     __tablename__ = "admin"
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    telegram_id: Mapped[int] = mapped_column(BigInteger)
+    login: Mapped[str] = mapped_column(String(256), unique=True)
+    password: Mapped[str] = mapped_column()
+    telegram_id: Mapped[int | None] = mapped_column(BigInteger)
     high_admin: Mapped[bool] = mapped_column(default=False)

@@ -47,7 +47,53 @@ async def presentation_local(callback: CallbackQuery):
 async def presentation_manage_hideshow(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer("[+] Отправьте ID презентацию, которую хотите показать/скрыть")
     await state.set_state(fsm.PresentationHide.id)
+
+@dp.callback_query(F.data == "presentation_manage_delete", tgfil.FAdmin(False))
+async def presentation_manage_delete(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("[+] Отправьте ID презентации, которую хотите удалить")
+    await state.set_state(fsm.PresentationDelete.id)  
+
+@dp.callback_query(F.data == "manage_presentations", tgfil.FAdmin(True))
+async def manage_presentationsf(callback: CallbackQuery):
+    presentations = await PresentationDatabase.GetAllPresentations(True)
+
+    await callback.message.answer(utils.get_localpresentations_msg(callback.from_user.first_name, presentations),
+                                  parse_mode='HTML',
+                                  reply_markup=keyboard.PRESENTATION_LOCAL_MANAGE)
+
+@dp.callback_query(F.data == "manage_admins", tgfil.FAdmin(True))
+async def manage_admins(callback: CallbackQuery):
+    await callback.message.answer("[*] Выберите подпункт", reply_markup=keyboard.ADMIN_MANAGE)
+
+@dp.callback_query(F.data == "manage_admins_all", tgfil.FAdmin(True))
+async def manage_admins_all(callback: CallbackQuery):
+    admins = await AdminPanel.GetAllAdmins()
+    msg = "Формат вылачи (ID, TG ID, LOGIN)\nВсе админы:\n"
+
+    for admin in admins:
+        msg += str(admin)
     
+    await callback.message.answer(msg)
+
+@dp.callback_query(F.data == "manage_admins_get_tg", tgfil.FAdmin(True))
+async def manage_admins_get_tg(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Отправьте Telegram ID пользователя")
+    await state.set_state(fsm.AdminGet.tg_id)
+
+@dp.callback_query(F.data == "manage_admins_get_login", tgfil.FAdmin(True))
+async def manage_admins_get_tg(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Отправьте логин пользователя")
+    await state.set_state(fsm.AdminGet.login)
+
+@dp.callback_query(F.data == "manage_admins_del", tgfil.FAdmin(True))
+async def manage_admins_del(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Отправьте ID (не telegram id) пользователя")
+    await state.set_state(fsm.AdminDel.id)
+
+@dp.callback_query(F.data == "manage_admins_add", tgfil.FAdmin())
+async def manage_admins_add(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("[+] Придумайте логин, (Пример: ФамилияИмя)")
+    await state.set_state(fsm.AdminNew.login)
 
 async def run_bot():
     print("[Telegram] Bot started")

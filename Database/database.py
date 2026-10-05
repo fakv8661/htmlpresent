@@ -21,8 +21,9 @@ class PresentationDatabase():
         async with session_factory() as session:
             stmt = (
                 select(models.Presentation)
-                .where(models.Presentation.hidden == where_hidden)
             )
+            if not where_hidden:
+                stmt = stmt.where(models.Presentation.hidden == False)
 
             cur = await session.execute(stmt)
             obj = cur.scalars().all()
@@ -45,7 +46,7 @@ class PresentationDatabase():
 
     @staticmethod
     async def CreatePresentation(name: str, author: str, description: str,
-                                 file: str, image: str | None, owner_id: int):
+                                 file: str, image: str | None, owner_id: int) -> None:
         async with session_factory() as session:
             presentation = models.Presentation(
                 name=name,
@@ -73,7 +74,7 @@ class PresentationDatabase():
             return rows
 
     @staticmethod
-    async def HidePresentation(id: int, hidden: bool):
+    async def HidePresentation(id: int, hidden: bool) -> None:
         async with session_factory() as session:
             stmt = (
                 select(models.Presentation)
@@ -85,6 +86,22 @@ class PresentationDatabase():
 
             if row is not None:
                 row.hidden = hidden
+
+            await session.commit()
+
+    @staticmethod
+    async def DeletePresentation(id: int) -> None:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Presentation)
+                .where(models.Presentation.id == id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            if row is not None:
+                await session.delete(row)
 
             await session.commit()
 
@@ -112,7 +129,8 @@ class AdminPanel():
         async with session_factory() as session:
             stmt = (
                 select(models.Admin)
-                .where(models.Admin.id == admin_id, models.Admin.high_admin == True)
+                .where(models.Admin.id == admin_id, 
+                       models.Admin.high_admin == True)
             )
 
             cur = await session.execute(stmt)
@@ -146,3 +164,56 @@ class AdminPanel():
             cur = await session.execute(stmt)
 
             return cur.scalar()
+
+    @staticmethod
+    async def GetAllAdmins() -> list[tuple[int, int, str]]:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Admin.id,
+                       models.Admin.telegram_id,
+                       models.Admin.login)
+            )
+
+            cur = await session.execute(stmt)
+
+            rows = cur.all()
+
+            return rows
+
+    @staticmethod
+    async def GetAdminIDByLogin(login: str) -> int | None:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Admin.id)
+                .where(models.Admin.login == login)
+            )
+
+            cur = await session.execute(stmt)
+
+            return cur.scalar()
+
+    @staticmethod
+    async def DeleteAdmin(id: int) -> None:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Admin)
+                .where(models.Admin.id == id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            if row is not None:
+                await session.delete(row)
+                await session.commit()
+
+    @staticmethod
+    async def CreateAdmin(login: str, password_hash: str, telegram_id: int = None):
+        async with session_factory() as session:
+            admin = models.Admin(login=login,
+                                 password=password_hash,
+                                 telegram_id=telegram_id)
+
+            session.add(admin)
+            await session.commit()
+            

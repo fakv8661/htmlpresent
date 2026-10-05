@@ -4,6 +4,7 @@ from fastapi import APIRouter
 from fastapi.requests import Request
 from fastapi.responses import FileResponse
 from fastapi.responses import RedirectResponse, JSONResponse
+from fastapi.exceptions import HTTPException
 
 from templates_config import templates, templates_present
 from Database import database
@@ -17,14 +18,15 @@ async def presentationgt(present_id: int, request: Request):
     if present is None:
         return RedirectResponse(url="/")
     if os.path.exists(os.path.join("templates/presentations", present.file)):
-        if "html" in present.file.split("."):
-            return templates_present.TemplateResponse(request, present.file)
-        else:
+        file_type = utils.get_filetype(present.file)
+        if file_type:
             return FileResponse(
             path=f"templates/presentations/{present.file}",
-            filename=f"presentation_{id}.pdf",
+            filename=f"presentation_{id}.{file_type}",
             headers={"Content-Disposition": "inline"}
         )
+        else:
+            return HTTPException(status_code=404)
 
     else:
         return RedirectResponse(url="/")
