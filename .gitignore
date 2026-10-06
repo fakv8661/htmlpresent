@@ -1,3 +1,6 @@
 .env
 __pycache__
 .venv
+.vscode
+presentation_asset/preview_img/*.jpg
+presentation_asset/preview_img/*.png

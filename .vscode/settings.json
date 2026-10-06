@@ -15,5 +15,6 @@
   "explorer.fileNesting.patterns": {
     "pyproject.toml": "alembic.ini, poetry.lock, .env"
   },
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "editor.defaultFormatter": null
 }

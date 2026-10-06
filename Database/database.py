@@ -216,4 +216,33 @@ class AdminPanel():
 
             session.add(admin)
             await session.commit()
+
+    @staticmethod
+    async def GetHashPassword(admin_id: int) -> str | None:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Admin.password)
+                .where(models.Admin.id == admin_id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            return row
+
+    @staticmethod
+    async def LinkTelegram(admin_id: int, telegram_id: int):
+        async with session_factory() as session:
+            stmt = (
+                select(models.Admin)
+                .where(models.Admin.id == admin_id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            if row:
+                row.telegram_id = telegram_id
+                await session.commit()
+                
             

@@ -23,3 +23,7 @@ class AdminDel(StatesGroup):
 class AdminNew(StatesGroup):
     login = State()
     telegram_id = State()
+
+class AdminAuth(StatesGroup):
+    login = State()
+    password = State()
