@@ -16,8 +16,10 @@ import path_config
 import utils
 from AdminPanel import validation as valid
 import keygen
+import logs
 
 router = Router(name="fsm_router")
+LOGI = logs.getLogger(__file__)
 
 #------------------FSM OTHER---------------------
 @router.callback_query(F.data == "fsm_cancel")
@@ -111,6 +113,8 @@ async def presentationadd_document(message: Message, state: FSMContext):
     )
 
     await message.answer("✅ Запрос на создание презентации отправлен")
+    LOGI.info("Presentation %s is created; File: %s; Image: %s; Owner: %s", 
+              padd_schema.name, padd_schema.file, padd_schema.image, admin_id)
     await state.clear()
 
 #------------------------------------------
@@ -167,6 +171,7 @@ async def presentation_manage_delete_id(message: Message, state: FSMContext):
         await message.answer("⚠️ Презентация не найдена")
 
     await PresentationDatabase.DeletePresentation(presentation_id)
+    LOGI.info("Presentation %s deleted by admin (%s)", presentation.name, message.from_user.id)
     await message.answer("❌ Презентация удалена")
 # ------------------------------------------------
 
@@ -205,6 +210,7 @@ async def manage_admins_del_fsm(message: Message, state: FSMContext):
         await state.clear()
         return
     await AdminPanel.DeleteAdmin(int(message.text))
+    LOGI.info("Admin %s removed from database by admin (%s)", message.text, message.from_user.id)
     await message.answer("❌ Запрос на удаление отправлен")
     await state.clear()
 #---------------------------------
@@ -248,6 +254,7 @@ async def manage_admins_add_tgid_null(callback: CallbackQuery, state: FSMContext
     await AdminPanel.CreateAdmin(login, password_hashed)
     await callback.message.answer(f"🔑 Пользователь создан!\nЛогин: {html.bold(login)}\nПароль: {html.spoiler(password)}",
                                   parse_mode='HTML')
+    LOGI.info("Created new user with login: %s", login)
     await state.clear()
 
 @router.message(fsm.AdminNew.telegram_id, tgfil.FNumeric())
@@ -267,6 +274,7 @@ async def managae_admins_add_tgid(message: Message, state: FSMContext):
     await AdminPanel.CreateAdmin(login, password_hashed, telegram_id=tg_id)
     await message.answer(f"🔑 Пользователь создан!\nЛогин: {html.bold(login)}\nПароль: {html.spoiler(password)}",
                          parse_mode='HTML')
+    LOGI.info("Created new user with login: %s", login)
     await state.clear()
 
 #-----------------------------
@@ -296,6 +304,7 @@ async def admin_auth_password(message: Message, state: FSMContext):
         return
 
     await message.answer("👤 Вы авторизованы. Телеграм связан с вашей учетной записью")
+    LOGI.info("Linked telegram (%s) with user (%s)", message.from_user.id, admin)
     await state.clear()
     await AdminPanel.LinkTelegram(admin, message.from_user.id)
 #--------------------------------

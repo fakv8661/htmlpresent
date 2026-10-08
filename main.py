@@ -12,22 +12,27 @@ from Routers import presentations
 from Database import database
 import path_config
 from env_loading import ENV
-
+import logs
 from AdminPanel import bot
 
 bot_task = None
+LOGI = logs.loggerInit()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    LOGI.debug("Lifespan enter")
     path_config.path_tests()
-    
+
     await database.InitDatabase()
+    LOGI.info("Database inited")
     bot_task = asyncio.create_task(bot.run_bot(), name="telegram_admin")
 
     yield
-
     await database.engine.dispose()
+    LOGI.info("Database dispose")
     bot_task.cancel("Exit")
+    LOGI.info("Bot task cancel")
+    LOGI.info("Exit...")
 
 
 app = FastAPI(debug=True, lifespan=lifespan)
@@ -53,4 +58,4 @@ def mainpg(request: Request):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app=app, port=8000)
+    uvicorn.run(app=app, port=8000, log_config=None, log_level=logs.logging.INFO)

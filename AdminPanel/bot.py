@@ -11,8 +11,10 @@ from AdminPanel import keyboard
 from AdminPanel import fsm
 from AdminPanel import fsm_router
 import utils
+import logs
 
 dp = Dispatcher()
+LOGI = logs.getLogger(__file__)
 
 @dp.message(CommandStart())
 async def startcmd(message: Message):
@@ -24,6 +26,7 @@ async def startcmd(message: Message):
         await message.answer(f"🚫 {html.bold(message.from_user.first_name)}, у вас нет доступа к этому боту!\n🆔 Для получения учетной записи обратитесь к администрации или авторизуйтесь через логин, пароль.\n💡 Ваш UID: {html.italic(str(message.from_user.id))}",
                              parse_mode='HTML',
                              reply_markup=keyboard.AUTH_KEYBOARD)
+        LOGI.info("User (%s) tried to get access to bot", message.from_user.id)
 
 @dp.callback_query(F.data == "presentation_add", tgfil.FAdmin(False))
 async def presentation_add(callback: CallbackQuery, state: FSMContext):
@@ -103,6 +106,6 @@ async def admin_auth(callback: CallbackQuery, state: FSMContext):
 
 
 async def run_bot():
-    print("[Telegram] Bot started")
     dp.include_router(fsm_router.router)
+    LOGI.info("Telegram bot starting")
     await dp.start_polling(bot, polling_timeout=30)
