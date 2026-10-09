@@ -18,6 +18,12 @@ PRESENTATION_LOCAL_MANAGE = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="❌ Удалить презентацию", callback_data="presentation_manage_delete")]
 ])
 
+PRESENTATION_PARAMS_MANAGE = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="🖊️ Название", callback_data="presentation_change_name")],
+    [InlineKeyboardButton(text="🖊️ Авторы", callback_data="presentation_change_author")],
+    [InlineKeyboardButton(text="🖊️ Описание", callback_data="presentation_change_description")]
+])
+
 ADMIN_MANAGE = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="👤 Все админы", callback_data="manage_admins_all")],
     [InlineKeyboardButton(text="➕ Добавить админа", callback_data="manage_admins_add")],

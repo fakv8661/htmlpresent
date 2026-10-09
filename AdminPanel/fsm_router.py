@@ -170,6 +170,16 @@ async def presentation_manage_delete_id(message: Message, state: FSMContext):
         await state.clear()
         await message.answer("⚠️ Презентация не найдена")
 
+    file_path = path_config.PRESENTATIONS.joinpath(presentation.file)
+
+    if presentation.preview_image:
+        img_path = path_config.PREVIEW_IMG.joinpath(presentation.preview_image)
+        if os.path.exists(img_path):
+            os.remove(img_path)
+    
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
     await PresentationDatabase.DeletePresentation(presentation_id)
     LOGI.info("Presentation %s deleted by admin (%s)", presentation.name, message.from_user.id)
     await message.answer("❌ Презентация удалена")
@@ -308,3 +318,95 @@ async def admin_auth_password(message: Message, state: FSMContext):
     await state.clear()
     await AdminPanel.LinkTelegram(admin, message.from_user.id)
 #--------------------------------
+
+#------------------------PRESENTATION EDIT
+
+def valid_field_presentation_edit(**kwargs) -> bool:
+    try:
+        valid.PresentationEditSchema.model_validate(kwargs)
+        return True
+    except ValidationError as e:
+        LOGI.debug("ValidationError", exc_info=e)
+        return False
+
+#--------NAME
+@router.message(fsm.PresentationEditName.id, tgfil.FPOwnCheck())
+async def presentation_change_name_id(message: Message, state: FSMContext):
+    await message.answer("📝 Отправьте новое название")
+    await state.update_data(id=int(message.text))
+    await state.set_state(fsm.PresentationEditName.name)
+
+@router.message(fsm.PresentationEditName.name)
+async def presentation_change_name_name(message: Message, state: FSMContext):
+    p_id = await state.get_value("id")
+    if not p_id:
+        await message.answer("ID Утерян")
+        await state.clear()
+        return
+
+    if not valid_field_presentation_edit(name=message.text):
+        await message.answer("Валидация не пройдена")
+        await state.clear()
+        return
+    
+
+    await message.answer("✅ Изменено")
+    LOGI.info("Presentation (%s) edited; Changed name -> %s by tg admin (%s)", p_id, message.text, message.from_user.id)
+    await PresentationDatabase.ChangeName(p_id, message.text)
+    await state.clear()
+#--------
+
+
+#--------AUTHOR
+@router.message(fsm.PresentationEditAuthor.id, tgfil.FPOwnCheck())
+async def presentation_change_author_id(message: Message, state: FSMContext):
+    await message.answer("📝 Отправьте новых авторов презентации")
+    await state.update_data(id=int(message.text))
+    await state.set_state(fsm.PresentationEditAuthor.author)
+
+@router.message(fsm.PresentationEditAuthor.author)
+async def presentation_change_author_author(message: Message, state: FSMContext):
+    p_id = await state.get_value("id")
+    if not p_id:
+        await message.answer("ID Утерян")
+        await state.clear()
+        return
+
+    if not valid_field_presentation_edit(author=message.text):
+        await message.answer("Валидация не пройдена")
+        await state.clear()
+        return
+
+    await message.answer("✅ Изменено")
+    LOGI.info("Presentation (%s) edited; Changed author -> %s by tg admin (%s)", p_id, message.text, message.from_user.id)
+    await PresentationDatabase.ChangeAuthor(p_id, message.text)
+    await state.clear()
+#--------
+
+#--------DESCRIPTION
+@router.message(fsm.PresentationEditDescription.id, tgfil.FPOwnCheck())
+async def presentation_change_desc_id(message: Message, state: FSMContext):
+    await message.answer("📝 Отправьте новое описание")
+    await state.update_data(id=int(message.text))
+    await state.set_state(fsm.PresentationEditDescription.description)
+
+@router.message(fsm.PresentationEditDescription.description)
+async def presentation_change_desc_desc(message: Message, state: FSMContext):
+    p_id = await state.get_value("id")
+    if not p_id:
+        await message.answer("ID Утерян")
+        await state.clear()
+        return
+
+    if not valid_field_presentation_edit(description=message.text):
+        await message.answer("Валидация не пройдена")
+        await state.clear()
+        return
+
+    await message.answer("✅ Изменено")
+    LOGI.info("Presentation (%s) edited; Changed description -> %s by tg admin (%s)", p_id, message.text, message.from_user.id)
+    await PresentationDatabase.ChangeDescription(p_id, message.text)
+    await state.clear()
+#--------
+
+#-------------------------------------

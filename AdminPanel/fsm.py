@@ -27,3 +27,15 @@ class AdminNew(StatesGroup):
 class AdminAuth(StatesGroup):
     login = State()
     password = State()
+
+class PresentationEditName(StatesGroup):
+    id = State()
+    name = State()
+
+class PresentationEditAuthor(StatesGroup):
+    id = State()
+    author = State()
+
+class PresentationEditDescription(StatesGroup):
+    id = State()
+    description = State()

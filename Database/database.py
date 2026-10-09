@@ -105,6 +105,46 @@ class PresentationDatabase():
 
             await session.commit()
 
+    @staticmethod
+    async def ChangeName(id: int, name: str) -> None:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Presentation)
+                .where(models.Presentation.id == id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            row.name = name
+            await session.commit()
+    @staticmethod
+    async def ChangeAuthor(id: int, author: str) -> None:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Presentation)
+                .where(models.Presentation.id == id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            row.author = author
+            await session.commit()
+    @staticmethod
+    async def ChangeDescription(id: int, description: str) -> None:
+        async with session_factory() as session:
+            stmt = (
+                select(models.Presentation)
+                .where(models.Presentation.id == id)
+            )
+
+            cur = await session.execute(stmt)
+            row = cur.scalar()
+
+            row.description = description
+            await session.commit()
+
 
 
 class AdminPanel():

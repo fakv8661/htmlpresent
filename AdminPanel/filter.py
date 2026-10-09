@@ -35,7 +35,7 @@ class FPOwnCheck(BaseFilter):
         self.state_key = state_key
     """Необходимо чтобы message.text являлся ID презентации или он был в state, иначе будет не то!!!"""
     async def __call__(self, message: Message, state: FSMContext) -> bool:
-        if state.get_state() is None:
+        if await state.get_state() is None:
             await message.answer("⚠️ FSM error")
             return False
         
@@ -56,6 +56,12 @@ class FPOwnCheck(BaseFilter):
 
         
         presentation = await PresentationDatabase.GetPresentationByID(presentation_id, True)
+
+        if not presentation:
+            await message.answer("⚠️ Презентация не найдена")
+            await state.clear()
+            return False
+
         high_admin = await AdminPanel.isHighAdmin(admin_id)
     
         if presentation.owner_id != admin_id and not high_admin:

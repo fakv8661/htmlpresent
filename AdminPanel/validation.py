@@ -8,7 +8,7 @@ from pydantic import ValidationError, TypeAdapter
 class PresentationAddSchema(BaseModel):
     name: str = Field(min_length=3, max_length=256)
     author: str = Field(min_length=3, max_length=256)
-    description: str = Field(max_length=500)
+    description: str = Field(min_length=3, max_length=500)
     image: Path | None
     file: Path
 
@@ -26,3 +26,8 @@ class PresentationAddSchema(BaseModel):
             raise ValidationError("Image not supported!")
         else:
             return image
+
+class PresentationEditSchema(BaseModel):
+    name: str | None = Field(default=None, min_length=3, max_length=256)
+    author: str | None = Field(default=None, min_length=3, max_length=256)
+    description: str | None = Field(default=None, min_length=3, max_length=500)

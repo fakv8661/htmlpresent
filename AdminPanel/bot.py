@@ -104,6 +104,24 @@ async def admin_auth(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer("🖊️ Отправьте ваш логин")
     await state.set_state(fsm.AdminAuth.login)
 
+@dp.callback_query(F.data == "presentation_manage_change", tgfil.FAdmin())
+async def presentation_manage_ch(callback: CallbackQuery):
+    await callback.message.answer("📋 Выберите что хотите изменить: ", reply_markup=keyboard.PRESENTATION_PARAMS_MANAGE)
+
+@dp.callback_query(F.data == "presentation_change_name", tgfil.FAdmin())
+async def presentation_change_name(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Отправьте id презентации")
+    await state.set_state(fsm.PresentationEditName.id)
+
+@dp.callback_query(F.data == "presentation_change_author", tgfil.FAdmin())
+async def presentation_change_name(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Отправьте id презентации")
+    await state.set_state(fsm.PresentationEditAuthor.id)
+
+@dp.callback_query(F.data == "presentation_change_description", tgfil.FAdmin())
+async def presentation_change_name(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Отправьте id презентации")
+    await state.set_state(fsm.PresentationEditDescription.id)
 
 async def run_bot():
     dp.include_router(fsm_router.router)
